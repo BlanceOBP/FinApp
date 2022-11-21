@@ -2,7 +2,7 @@
 
 namespace FinApp.Entity
 {
-    public class RegistrationUser
+    public class RegistrationData
     {
         public string Name { get; set; }
 

@@ -3,7 +3,7 @@
 
 namespace FinApp.Entity
 {
-    public class LoginUser
+    public class LoginData
     {
         [EmailAddress]
         public string Email { get; set; }

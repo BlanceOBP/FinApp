@@ -8,7 +8,7 @@ namespace FinApp.DataBase
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql(@"Server=localhost;Port=5432;Username=postgres;Password=a200308;Database=FinanceApp");
+            optionsBuilder.UseNpgsql(@"Server=localhost;Port=5433;Username=postgres;Password=a200308;Database=FinanceApp");
         }
 
         public ApplicationContext()
@@ -16,7 +16,7 @@ namespace FinApp.DataBase
             Database.EnsureCreated();
         }
 
-        public DbSet<Users> users { get; set; }
+        public DbSet<User> user { get; set; }
         public DbSet<Source> sources { get; set; }
         public DbSet<SourceOfIncome> sources_of_income { get; set; }
         public DbSet<Expense> expenses { get; set; }
