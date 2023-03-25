@@ -9,13 +9,12 @@ namespace FinApp.Entity
     public class SourceOfIncome
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         public string Name { get; set; }
 
         [ForeignKey("Users")]
         public int UserId { get; set; }
-        [ForeignKey("Income")]
-        public int SourceId { get; set; }
     }
 }

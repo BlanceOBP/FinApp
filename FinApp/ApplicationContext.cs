@@ -11,9 +11,9 @@ namespace FinApp.DataBase
     {
         public DbSet<User> user { get; set; }
         public DbSet<Income> income { get; set; }
-        public DbSet<SourceOfIncome> sources_of_income { get; set; }
+        public DbSet<SourceOfIncome> sourcesOfIncome { get; set; }
         public DbSet<Expense> expenses { get; set; }
-        public DbSet<ExpenseCategory> expense_categories { get; set; }
+        public DbSet<ExpenseCategory> expenseCategories { get; set; }
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
