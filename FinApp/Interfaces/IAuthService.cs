@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
 
-namespace FinApp.RepositoryInterface
+namespace FinApp.Interface
 {
     public interface IAuthService
     {

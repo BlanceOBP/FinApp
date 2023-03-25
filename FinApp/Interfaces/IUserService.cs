@@ -1,7 +1,7 @@
 ﻿using FinApp.Entity;
 using FinApp.MiddleEntity;
 
-namespace FinApp.RepositoryInterface
+namespace FinApp.Interface
 {
     public interface IUserService
     {
