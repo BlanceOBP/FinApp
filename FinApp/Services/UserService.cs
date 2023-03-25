@@ -2,12 +2,10 @@
 using FinApp.Entity;
 using FinApp.Exceptions;
 using FinApp.MiddleEntity;
-using FinApp.RepositoryInterface;
-using Microsoft.AspNetCore.Mvc;
+using FinApp.Interface;
 using Microsoft.EntityFrameworkCore;
-using System.Runtime.Intrinsics.X86;
 
-namespace FinApp.Repositories
+namespace FinApp.Services
 {
     public class UserService : IUserService
     {
@@ -22,7 +20,7 @@ namespace FinApp.Repositories
         public async Task<List<User>> GetAll()
         {
             var users = await acb.user.ToListAsync();
-            return(users);
+            return users;
         }
 
         public async Task<User> Get(int id)
@@ -30,12 +28,12 @@ namespace FinApp.Repositories
             var user = await acb.user.SingleOrDefaultAsync(x => x.Id == id);
             if (user == null)
                 throw new IdIsNotFound();
-            return(user);
+            return user;
         }
 
-        public async Task<int> Create(UserCreateData userCreateData,int id)
+        public async Task<int> Create(UserCreateData userCreateData, int id)
         {
-            var userExist = acb.user.SingleOrDefaultAsync(x => x.Id == id );
+            var userExist = acb.user.SingleOrDefaultAsync(x => x.Id == id);
             if (userExist != null)
                 throw new UserExists();
 
@@ -53,14 +51,14 @@ namespace FinApp.Repositories
 
             acb.user.AddAsync(newUser);
             await acb.SaveChangesAsync();
-            
+
             return newUser.Id;
         }
 
         public async Task Update(UserUpdateData userUpdateData, int id)
         {
             var user1 = new User();
-            var user = acb.user.SingleOrDefaultAsync(x =>x.Id == id);
+            var user = acb.user.SingleOrDefaultAsync(x => x.Id == id);
             if (user == null)
                 throw new UserNotFounfException();
 

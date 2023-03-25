@@ -1,7 +1,7 @@
 ﻿using FinApp.DataBase;
 using FinApp.Entity;
 using FinApp.Exceptions;
-using FinApp.RepositoryInterface;
+using FinApp.Interface;
 using FinApp.Token;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace FinApp.Repositories
+namespace FinApp.Services
 {
     public class AuthService : IAuthService
     {
@@ -17,7 +17,7 @@ namespace FinApp.Repositories
 
         public AuthService(ApplicationContext _acb)
         {
-            this.acb = _acb;
+            acb = _acb;
         }
 
         public JwtSecurityToken Authorization([FromBody] LoginData user)
@@ -39,7 +39,7 @@ namespace FinApp.Repositories
         {
             if (acb.user.SingleOrDefault(x => x.Login == user.Login
                                            || x.Email == user.Email) != null)
-            { 
+            {
                 throw new InputLoginException();
             }
 
@@ -54,8 +54,8 @@ namespace FinApp.Repositories
                 Email = user.Email,
                 Login = user.Login,
                 Password = BCrypt.Net.BCrypt.HashPassword(user.Password),
-                CreateOfDate = dateOfCreate, 
-                CreateOfEdit = DateOfEdit 
+                CreateOfDate = dateOfCreate,
+                CreateOfEdit = DateOfEdit
             };
 
             acb.user.Add(NewUser);

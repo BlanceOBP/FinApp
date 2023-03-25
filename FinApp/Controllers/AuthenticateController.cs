@@ -1,7 +1,7 @@
 ﻿using FinApp.DataBase;
 using FinApp.Entity;
 using FinApp.Exceptions;
-using FinApp.RepositoryInterface;
+using FinApp.Interface;
 using FinApp.Token;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
