@@ -1,7 +1,7 @@
 ﻿namespace FinApp.MiddleEntity
 {
     /// <summary>
-    /// Represents the middleware create income source.
+    /// Represents the middleware create income.
     /// </summary>
     public class IncomeCreateData : IncomeUpdateData
     {
