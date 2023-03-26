@@ -1,9 +1,9 @@
 ﻿namespace FinApp.MiddleEntity
 {
     /// <summary>
-    /// Represents the middleware update income.
+    /// Represents the middleware update expense.
     /// </summary>
-    public class IncomeUpdateData
+    public class ExpenseUpdateData
     {
         public string Name { get; set; }
 

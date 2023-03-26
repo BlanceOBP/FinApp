@@ -13,7 +13,7 @@ namespace FinApp.Entity
 
         public string Name { get; set; }
 
-        [ForeignKey("Expense")]
-        public int ExpenseId { get; set; }
+        [ForeignKey("User")]
+        public int UserId { get; set; }
     }
 }

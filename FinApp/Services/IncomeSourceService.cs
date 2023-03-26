@@ -68,12 +68,12 @@ namespace FinApp.Services
 
         public async Task Delete(int id)
         {
-            var incomeSourceToDelete = await acb.user.SingleOrDefaultAsync(x => x.Id == id);
+            var incomeSourceToDelete = await acb.sourcesOfIncome.SingleOrDefaultAsync(x => x.Id == id);
             if (incomeSourceToDelete == null)
             {
-                throw new UserIsDeletedException();
+                throw new IncomeIsDeletedException();
             }
-            acb.user.Remove(incomeSourceToDelete);
+            acb.sourcesOfIncome.Remove(incomeSourceToDelete);
             await acb.SaveChangesAsync();
         }
     }
