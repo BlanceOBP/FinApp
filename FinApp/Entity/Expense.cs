@@ -23,5 +23,8 @@ namespace FinApp.Entity
 
         [ForeignKey("ExpenseCategory")]
         public int ExpenseCategoryId { get; set; }
+
+        [ForeignKey("User")]
+        public int User{ get; set; }
     }
 }

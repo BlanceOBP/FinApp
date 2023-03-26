@@ -6,20 +6,20 @@ using Microsoft.AspNetCore.Mvc;
 namespace FinApp.Controllers
 {
     [ApiController]
-    [Route("api/incomeSource")]
-    public class IncomeSourceController : BaseController
+    [Route("api/expense")]
+    public class ExpenseController : BaseController
     {
-        private readonly IIncomeSourceService incomeSourceService;
+        private readonly IExpenseService expenseService;
 
-        public IncomeSourceController(IIncomeSourceService _incomeSourceService)
+        public ExpenseController(IExpenseService _expenseService)
         {
-            incomeSourceService = _incomeSourceService;
+            expenseService = _expenseService;
         }
 
         /// <summary>
-        /// Returns all income source.
+        /// Returns all expense.
         /// </summary>
-        /// <returns>List of income source.</returns>
+        /// <returns>List of expense .</returns>
         /// <response code="200">Success.</response>
         /// <response code="401">Unauthorized.</response>
         /// <response code="403">You don't have an access to perform this action.</response>
@@ -29,21 +29,21 @@ namespace FinApp.Controllers
         [HttpGet]
         [Authorize(Roles = "Administrator")]
         [Route("GetAll")]
-        public async Task<IActionResult> GetList()
+        public async Task<IActionResult> GetList(MoneyFlow moneyFlow)
         {
             var userId = GetUserId();
-            var incomeSource = await incomeSourceService.GetAll(userId);
+            var expense = await expenseService.GetAll(userId, moneyFlow);
 
-            return Ok(incomeSource);
+            return Ok(expense);
         }
 
         /// <summary>
-        /// Returns income source by ID.
+        /// Returns expense by ID.
         /// </summary>
-        /// <param name="id">Desired income source ID.</param>
-        /// <returns>Income source with the specified ID.</returns>
+        /// <param name="id">Desired expense  ID.</param>
+        /// <returns>Expense  with the specified ID.</returns>
         /// <response code="200">Success.</response>
-        /// <response code="400">Income source with this ID was not found.</response>
+        /// <response code="400">Expense  with this ID was not found.</response>
         /// <response code="401">Unauthorized.</response>
         /// <response code="403">You don't have an access to perform this action.</response>
         [ProducesResponseType(200)]
@@ -56,37 +56,37 @@ namespace FinApp.Controllers
         public async Task<IActionResult> Get(int id)
         {
             var userId = GetUserId();
-            var incomeSource = await incomeSourceService.Get(id, userId);
+            var expense = await expenseService.Get(id, userId);
 
-            return Ok(incomeSource);
+            return Ok(expense);
         }
 
         /// <summary>
-        /// Create income source.
+        /// Create expense.
         /// </summary>
-        /// <param name="incomeCreateData">Desirable create income source.</param>
+        /// <param name="expenseCreateData">Desirable create expense .</param>
         /// <returns>Status code 200 (OK).</returns>
         /// <response code="204">Success.</response>
         [ProducesResponseType(204)]
         [HttpPost]
         [Authorize(Roles = "Administrator,User")]
         [Route("Create")]
-        public async Task<IActionResult> Create([FromBody] IncomeCreateData incomeCreateData)
+        public async Task<IActionResult> Create([FromBody] ExpenseCreateData expenseCreateData)
         {
             var userId = GetUserId();
-            var incomeSourceId = await incomeSourceService.Create(incomeCreateData, userId);
+            var expenseId = await expenseService.Create(expenseCreateData, userId);
 
-            return CreatedAtAction(nameof(Create), incomeSourceId);
+            return CreatedAtAction(nameof(Create), expenseId);
         }
 
         /// <summary>
-        /// Updates current income source data.
+        /// Updates current expense data.
         /// </summary>
-        /// <param name="incomeUpdateData">Desirable new income source data.</param>
+        /// <param name="expenseUpdateData">Desirable new expense  data.</param>
         /// <returns>Status code 200 (OK).</returns>
-        /// <exception cref="IncomeSourceNotFound">Income source with this ID was not found.</exception>
+        /// <exception cref="ExpenseNotFoundExcrption">Expense  with this ID was not found.</exception>
         /// <response code="204">Success.</response>
-        /// <response code="400">Income source with this ID was not found.</response>
+        /// <response code="400">Expense  with this ID was not found.</response>
         /// <response code="401">Unauthorized.</response>
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
@@ -94,22 +94,22 @@ namespace FinApp.Controllers
         [Authorize(Roles = "Administrator,User")]
         [HttpPut]
         [Route("Update")]
-        public async Task<IActionResult> Update([FromBody] IncomeUpdateData incomeUpdateData)
+        public async Task<IActionResult> Update([FromBody] ExpenseUpdateData expenseUpdateData)
         {
             var userId = GetUserId();
-            await incomeSourceService.Update(incomeUpdateData, userId);
+            await expenseService.Update(expenseUpdateData, userId);
 
             return NoContent();
         }
 
         /// <summary>
-        /// Deletes a income source.
+        /// Deletes a expense.
         /// </summary>
-        /// <param name="id">Received income source ID.</param>
+        /// <param name="id">Received expense  ID.</param>
         /// <returns>Status code 200 (OK).</returns>
-        /// <exception cref="IncomeSourceNotFound">Income source with this ID was not found.</exception>
+        /// <exception cref="IncomeNotFoundEXception">Expense with this ID was not found.</exception>
         /// <response code="204">Success.</response>
-        /// <response code="400">Income source with this ID was not found.</response>
+        /// <response code="400">Expense with this ID was not found.</response>
         /// <response code="401">Unauthorized.</response>
         /// <response code="403">You don't have an access to perform this action.6</response>
         [ProducesResponseType(204)]
@@ -121,7 +121,7 @@ namespace FinApp.Controllers
         [Route("Delete")]
         public async Task<IActionResult> Delete(int id)
         {
-            await incomeSourceService.Delete(id);
+            await expenseService.Delete(id);
 
             return NoContent();
         }
