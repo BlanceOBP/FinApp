@@ -17,7 +17,7 @@ namespace FinApp.Controllers
         }
 
         /// <summary>
-        /// Returns all users.
+        /// Get all users.
         /// </summary>
         /// <returns>List of all users.</returns>
         /// <response code="200">Success.</response>
@@ -37,7 +37,7 @@ namespace FinApp.Controllers
         }
 
         /// <summary>
-        /// Returns user by ID.
+        /// Get user by ID.
         /// </summary>
         /// <param name="id">Desired user ID.</param>
         /// <returns>User with the specified ID.</returns>
