@@ -9,26 +9,27 @@ namespace FinApp.Services
 {
     public class ExpenseService : IExpenseService
     {
-        private readonly ApplicationContext acb;
+        private readonly ApplicationContext _context;
 
-        public ExpenseService(ApplicationContext _acb)
+        public ExpenseService(ApplicationContext context)
         {
-            acb = _acb;
+            _context = context;
         }
 
         public async Task<List<Expense>> GetAll(int userId, MoneyFlow moneyFlow)
         {
-            var expanse = await acb.expenses.Where(x => x.User == userId && x.DateOfCreate >= moneyFlow.From && x.DateOfCreate <= moneyFlow.To).ToListAsync();
+            var expanse = await _context.expenses.Where(x => x.UserId == userId && x.CreatedAt >= moneyFlow.From && x.CreatedAt <= moneyFlow.To).ToListAsync();
+
             return expanse;
         }
 
         public async Task<Expense> Get(int id, int userId)
         {
-            var expense = await acb.expenses.SingleOrDefaultAsync(x => x.Id == id);
+            var expense = await _context.expenses.SingleOrDefaultAsync(x => x.Id == id);
 
             if (expense == null)
                 throw new ExpenseNotFoudException();
-            if (userId != expense.User)
+            if (userId != expense.UserId)
                 throw new NoAccessException();
 
             return expense;
@@ -36,24 +37,25 @@ namespace FinApp.Services
 
         public async Task<int> Create(ExpenseCreateData expenseCreateData, int userId)
         {
-            var userExist = acb.user.SingleOrDefaultAsync(x => x.Id == userId);
+            var userExist = _context.user.SingleOrDefaultAsync(x => x.Id == userId);
             if (userExist != null)
                 throw new UserExists();
-            if (await acb.expenses.SingleOrDefaultAsync(x => x.Id == expenseCreateData.CategoryId) == null)
+            if (await _context.expenses.SingleOrDefaultAsync(x => x.Id == expenseCreateData.CategoryId) == null)
                 throw new ExpenseNotFoudException();
-            if (acb.expenses.SingleOrDefaultAsync(x => x.Id == expenseCreateData.CategoryId).Id != userId)
+            if (_context.expenses.SingleOrDefaultAsync(x => x.Id == expenseCreateData.CategoryId).Id != userId)
                 throw new ExpenseExistException();
             var newExpense = new Expense
             {
                 Name = expenseCreateData.Name,
                 Summary = expenseCreateData.Summary,
                 ExpenseCategoryId = expenseCreateData.CategoryId,
-                DateOfCreate = DateTime.Now,
-                DateOfEdit = DateTime.Now,
-                User = userId
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now,
+                UserId = userId
             };
-            await acb.expenses.AddAsync(newExpense);
-            await acb.SaveChangesAsync();
+
+            await _context.expenses.AddAsync(newExpense);
+            await _context.SaveChangesAsync();
 
             return newExpense.Id;
         }
@@ -61,36 +63,37 @@ namespace FinApp.Services
         public async Task Update(ExpenseUpdateData expenseUpdateData, int userId)
         {
             var expense1 = new Expense();
-            var expense = acb.expenses.SingleOrDefaultAsync(x => x.Id == expense1.Id);
+            var expense = _context.expenses.SingleOrDefaultAsync(x => x.Id == expense1.Id);
             if (expense == null)
                 throw new ExpenseExistException();
-            if (userId != expense1.User)
+            if (userId != expense1.UserId)
                 throw new NoAccessException();
-            if (await acb.expenseCategories.SingleOrDefaultAsync(x => x.Id == expenseUpdateData.CategoryId) == null)
+            if (await _context.expenseCategories.SingleOrDefaultAsync(x => x.Id == expenseUpdateData.CategoryId) == null)
                 throw new ExpenseNotFoudException();
-            if (acb.expenseCategories.SingleOrDefault(x => x.Id == expenseUpdateData.CategoryId).UserId != userId)
+            if (_context.expenseCategories.SingleOrDefault(x => x.Id == expenseUpdateData.CategoryId).UserId != userId)
                 throw new NoAccessException();
 
 
             expense1.Name = expenseUpdateData.Name;
             expense1.Summary = expenseUpdateData.Summary;
             expense1.ExpenseCategoryId = expenseUpdateData.CategoryId;
-            expense1.DateOfEdit = DateTime.Now;
+            expense1.UpdatedAt = DateTime.Now;
 
 
-            acb.expenses.Update(expense1);
-            await acb.SaveChangesAsync();
+            _context.expenses.Update(expense1);
+            await _context.SaveChangesAsync();
         }
 
         public async Task Delete(int id)
         {
-            var expenseToDelete = await acb.expenses.SingleOrDefaultAsync(x => x.Id == id);
+            var expenseToDelete = await _context.expenses.SingleOrDefaultAsync(x => x.Id == id);
             if (expenseToDelete == null)
             {
                 throw new ExpenseIsDeletedException();
             }
-            acb.expenses.Remove(expenseToDelete);
-            await acb.SaveChangesAsync();
+
+            _context.expenses.Remove(expenseToDelete);
+            await _context.SaveChangesAsync();
         }
     }
 }

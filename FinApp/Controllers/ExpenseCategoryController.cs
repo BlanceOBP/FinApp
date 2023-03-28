@@ -17,7 +17,7 @@ namespace FinApp.Controllers
         }
 
         /// <summary>
-        /// Returns all expense category.
+        /// Get all expense category.
         /// </summary>
         /// <returns>List of expense category.</returns>
         /// <response code="200">Success.</response>
@@ -38,7 +38,7 @@ namespace FinApp.Controllers
         }
 
         /// <summary>
-        /// Returns expense category by ID.
+        /// Get expense category by ID.
         /// </summary>
         /// <param name="id">Desired expense category ID.</param>
         /// <returns>Expense category with the specified ID.</returns>
