@@ -9,21 +9,23 @@ namespace FinApp.Services
 {
     public class ExpenseCategoryService : IExpenseCategoryService
     {
-        private readonly ApplicationContext acb;
+        private readonly ApplicationContext _context;
 
-        public ExpenseCategoryService(ApplicationContext _acb)
+        public ExpenseCategoryService(ApplicationContext context)
         {
-            acb = _acb;
+            _context = context;
         }
+
         public async Task<List<ExpenseCategory>> GetAll(int userId)
         {
-            var expenseCategory = await acb.expenseCategories.Where(x => x.UserId == userId).ToListAsync();
+            var expenseCategory = await _context.expenseCategories.Where(x => x.UserId == userId).ToListAsync();
+
             return expenseCategory;
         }
 
         public async Task<ExpenseCategory> Get(int id, int userId)
         {
-            var expenseCategory = await acb.expenseCategories.SingleOrDefaultAsync(x => x.Id == id);
+            var expenseCategory = await _context.expenseCategories.SingleOrDefaultAsync(x => x.Id == id);
 
             if (expenseCategory == null)
                 throw new ExpenseNotFoudException();
@@ -35,18 +37,18 @@ namespace FinApp.Services
 
         public async Task<int> Create(ExpenseCreateData expenseCreateData, int userId)
         {
-            var userExist = acb.user.SingleOrDefaultAsync(x => x.Id == userId);
+            var userExist = _context.user.SingleOrDefaultAsync(x => x.Id == userId);
             if (userExist != null)
                 throw new UserExists();
-            if (await acb.expenseCategories.SingleOrDefaultAsync(x => x.Name == expenseCreateData.Name && x.UserId == userId) != null)
+            if (await _context.expenseCategories.SingleOrDefaultAsync(x => x.Name == expenseCreateData.Name && x.UserId == userId) != null)
                 throw new ExpenseExistException();
             var newExpenseCategory = new ExpenseCategory
             {
                 Name = expenseCreateData.Name,
                 UserId = userId
             };
-            await acb.expenseCategories.AddAsync(newExpenseCategory);
-            await acb.SaveChangesAsync();
+            await _context.expenseCategories.AddAsync(newExpenseCategory);
+            await _context.SaveChangesAsync();
 
             return newExpenseCategory.Id;
         }
@@ -54,25 +56,27 @@ namespace FinApp.Services
         public async Task Update(ExpenseUpdateData expenseUpdateData, int userId)
         {
             var expenseCategory1 = new ExpenseCategory();
-            var expenseCategory = acb.expenseCategories.SingleOrDefaultAsync(x => x.Id == expenseCategory1.Id);
+            var expenseCategory = _context.expenseCategories.SingleOrDefaultAsync(x => x.Id == expenseCategory1.Id);
             if (expenseCategory == null)
                 throw new ExpenseExistException();
             if (userId != expenseCategory1.UserId)
                 throw new NoAccessException();
             expenseCategory1.Name = expenseUpdateData.Name;
-            acb.expenseCategories.Update(expenseCategory1);
-            await acb.SaveChangesAsync();
+
+            _context.expenseCategories.Update(expenseCategory1);
+            await _context.SaveChangesAsync();
         }
 
         public async Task Delete(int id)
         {
-            var expenseCategoryToDelete = await acb.expenseCategories.SingleOrDefaultAsync(x => x.Id == id);
+            var expenseCategoryToDelete = await _context.expenseCategories.SingleOrDefaultAsync(x => x.Id == id);
             if (expenseCategoryToDelete == null)
             {
                 throw new ExpenseIsDeletedException();
             }
-            acb.expenseCategories.Remove(expenseCategoryToDelete);
-            await acb.SaveChangesAsync();
+
+            _context.expenseCategories.Remove(expenseCategoryToDelete);
+            await _context.SaveChangesAsync();
         }
     }
 }

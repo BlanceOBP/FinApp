@@ -26,7 +26,6 @@ namespace FinApp.Entity
 
         public string? Login { get; set; }
 
-
         [JsonIgnore]
         public string? Password { get; set; }
 

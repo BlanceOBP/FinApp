@@ -17,7 +17,7 @@ namespace FinApp.Controllers
         }
 
         /// <summary>
-        /// Returns all income source.
+        /// Get all income source.
         /// </summary>
         /// <returns>List of income source.</returns>
         /// <response code="200">Success.</response>
@@ -38,7 +38,7 @@ namespace FinApp.Controllers
         }
 
         /// <summary>
-        /// Returns income source by ID.
+        /// Get income source by ID.
         /// </summary>
         /// <param name="id">Desired income source ID.</param>
         /// <returns>Income source with the specified ID.</returns>
