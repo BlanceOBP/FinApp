@@ -19,7 +19,7 @@ namespace FinApp.Interfaces
         /// <summary>
         /// Deletes expense data.
         /// </summary>
-        /// <param name="id">ID of income to be deleted.</param>
+        /// <param name="id">ID of expense to be deleted.</param>
         Task Delete(int id);
 
         /// <summary>

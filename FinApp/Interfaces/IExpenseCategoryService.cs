@@ -16,6 +16,10 @@ namespace FinApp.Interfaces
         /// <returns>Created expense category.</returns>
         Task<int> Create(ExpenseCreateData expenseCreateData, int userId);
 
+        /// <summary>
+        /// Deletes expense category data.
+        /// </summary>
+        /// <param name="id">ID of expense category to be deleted.</param>
         Task Delete(int id);
 
         /// <summary>
