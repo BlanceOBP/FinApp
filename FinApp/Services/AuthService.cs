@@ -1,7 +1,7 @@
 ﻿using FinApp.DataBase;
 using FinApp.Entity;
 using FinApp.Exceptions;
-using FinApp.RepositoryInterface;
+using FinApp.Interface;
 using FinApp.Token;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,20 +9,20 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace FinApp.Repositories
+namespace FinApp.Services
 {
     public class AuthService : IAuthService
     {
-        private readonly ApplicationContext acb;
+        private readonly ApplicationContext _context;
 
-        public AuthService(ApplicationContext _acb)
+        public AuthService(ApplicationContext context)
         {
-            this.acb = _acb;
+            _context = context;
         }
 
         public JwtSecurityToken Authorization([FromBody] LoginData user)
         {
-            if (acb.user.SingleOrDefaultAsync(x => x.Email == user.Email && x.Password == user.Password) != null)
+            if (_context.user.AnyAsync(x => x.Email == user.Email && x.Password == user.Password) != null)
             {
                 throw new LoginException();
             }
@@ -37,9 +37,9 @@ namespace FinApp.Repositories
 
         public async Task Registration([FromBody] RegistrationData user)
         {
-            if (acb.user.SingleOrDefault(x => x.Login == user.Login
+            if (_context.user.AnyAsync(x => x.Login == user.Login
                                            || x.Email == user.Email) != null)
-            { 
+            {
                 throw new InputLoginException();
             }
 
@@ -54,12 +54,12 @@ namespace FinApp.Repositories
                 Email = user.Email,
                 Login = user.Login,
                 Password = BCrypt.Net.BCrypt.HashPassword(user.Password),
-                CreateOfDate = dateOfCreate, 
-                CreateOfEdit = DateOfEdit 
+                CreateOfDate = dateOfCreate,
+                CreateOfEdit = DateOfEdit
             };
 
-            acb.user.Add(NewUser);
-            await acb.SaveChangesAsync();
+            _context.user.Add(NewUser);
+            await _context.SaveChangesAsync();
         }
 
     }

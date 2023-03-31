@@ -16,12 +16,15 @@ namespace FinApp.Entity
         public float Summary { get; set; }
 
         [Column(TypeName = "date")]
-        public DateTime DateOfCreate { get; set; }
+        public DateTime CreatedAt { get; set; }
 
         [Column(TypeName = "date")]
-        public DateTime DateOfEdit { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
         [ForeignKey("ExpenseCategory")]
         public int ExpenseCategoryId { get; set; }
+
+        [ForeignKey("User")]
+        public int UserId{ get; set; }
     }
 }
