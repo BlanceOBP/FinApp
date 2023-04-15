@@ -1,9 +1,11 @@
 ﻿using FinApp.Controllers;
 using FinApp.DataBase;
 using FinApp.Entity;
+using FinApp.EnumValue;
 using FinApp.Exceptions;
 using FinApp.Interfaces;
 using FinApp.MiddleEntity;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinApp.Services
@@ -17,11 +19,28 @@ namespace FinApp.Services
             _context = context;
         }
 
-        public async Task<List<SourceOfIncome>> GetAll(int userId)
+        public async Task<ResponseType<SourceOfIncome>> GetAll(int userId, int page, CategotiesSort sort)
         {
-            var incomeSources = await _context.sourcesOfIncome.Where(x => x.UserId == userId).ToListAsync();
+            var pageResults = 5f;
+            var pageCount = Math.Ceiling(_context.sourcesOfIncome.Count() / pageResults);
 
-            return incomeSources;
+            IQueryable<SourceOfIncome> query = _context.sourcesOfIncome;
+            query = sort switch
+            {
+                CategotiesSort.NameAsc => query.OrderBy(x => x.Name),
+                CategotiesSort.NameDesc => query.OrderByDescending(x => x.Name),
+            };
+
+            var incomeSources = await query.Where(x => x.UserId == userId).Skip((page - 3) * Convert.ToInt32(pageResults)).Take(Convert.ToInt32(pageResults)).ToListAsync();
+
+            var response = new ResponseType<SourceOfIncome>
+            {
+                ListOfType = incomeSources,
+                CurrentPage = page,
+                CountPage = Convert.ToInt32(pageCount)
+            };
+
+            return response;
         }
 
         public async Task<SourceOfIncome> Get(int id, int userId)

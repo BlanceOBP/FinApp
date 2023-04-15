@@ -1,5 +1,6 @@
 ﻿using FinApp.DataBase;
 using FinApp.Entity;
+using FinApp.EnumValue;
 using FinApp.Exceptions;
 using FinApp.Interfaces;
 using FinApp.MiddleEntity;
@@ -16,11 +17,32 @@ namespace FinApp.Services
             _context = context;
         }
 
-        public async Task<List<Income>> GetAll(int userId, MoneyFlow moneyFlow)
+        public async Task<ResponseType<Income>> GetAll(int userId, MoneyFlow moneyFlow, int page, MoneyFlowSort sort)
         {
-            var income = await _context.income.Where(x => x.UserId == userId && x.CreatedAt >= moneyFlow.From && x.CreatedAt <= moneyFlow.To).ToListAsync();
+            var pageResults = 5f;
+            var pageCount = Math.Ceiling(_context.income.Count() / pageResults);
 
-            return income;
+            IQueryable<Income> query = _context.income;
+            query = sort switch
+            {
+                MoneyFlowSort.NameAsk => query.OrderBy(x => x.Name),
+                MoneyFlowSort.NameDesc => query.OrderByDescending(x => x.Name),
+                MoneyFlowSort.SummaryAsk => query.OrderBy(x => x.Summary),
+                MoneyFlowSort.SummaryDesc => query.OrderByDescending(x => x.Summary),
+                MoneyFlowSort.CategoryAsk => query.OrderBy(x => x.SourceOfIncomeId),
+                MoneyFlowSort.CategoryDesc => query.OrderByDescending(x => x.SourceOfIncomeId)
+            };
+
+            var income = await query.Where(x => x.UserId == userId && x.CreatedAt >= moneyFlow.From && x.CreatedAt <= moneyFlow.To).Skip((page - 3) * Convert.ToInt32(pageResults)).Take(Convert.ToInt32(pageResults)).ToListAsync();
+
+            var response = new ResponseType<Income>
+            {
+                ListOfType = income,
+                CurrentPage = page,
+                CountPage = Convert.ToInt32(pageCount)
+            };
+
+            return response;
         }
 
         public async Task<Income> Get(int id, int userId)

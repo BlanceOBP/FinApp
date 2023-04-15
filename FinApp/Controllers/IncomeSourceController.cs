@@ -1,4 +1,5 @@
-﻿using FinApp.Interfaces;
+﻿using FinApp.EnumValue;
+using FinApp.Interfaces;
 using FinApp.MiddleEntity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +20,8 @@ namespace FinApp.Controllers
         /// <summary>
         /// Get all income source.
         /// </summary>
+        /// <param name="page">Users list page.</param>
+        /// <param name="sort">Order sorting.</param>
         /// <returns>List of income source.</returns>
         /// <response code="200">Success.</response>
         /// <response code="401">Unauthorized.</response>
@@ -29,10 +32,10 @@ namespace FinApp.Controllers
         [HttpGet]
         [Authorize(Roles = "Administrator")]
         [Route("GetAll")]
-        public async Task<IActionResult> GetList()
+        public async Task<IActionResult> GetList(int page, CategotiesSort sort)
         {
             var userId = GetUserId();
-            var incomeSource = await incomeSourceService.GetAll(userId);
+            var incomeSource = await incomeSourceService.GetAll(userId, page, sort);
 
             return Ok(incomeSource);
         }

@@ -1,4 +1,5 @@
 ﻿using FinApp.Entity;
+using FinApp.EnumValue;
 using FinApp.MiddleEntity;
 
 namespace FinApp.Interfaces
@@ -33,9 +34,11 @@ namespace FinApp.Interfaces
         /// <summary>
         /// Get all income source categories.
         /// </summary>
+        /// <param name="page">Users list page.</param>
+        /// <param name="sort">Order sorting.</param>
         /// <param name="userId">Current user ID.</param>
         /// <returns>Get all income source category.</returns>
-        Task<List<SourceOfIncome>> GetAll(int userId);
+        Task<ResponseType<SourceOfIncome>> GetAll(int userId, int page, CategotiesSort sort);
 
         /// <summary>
         /// Updates income source category data.

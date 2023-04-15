@@ -2,6 +2,7 @@
 using FinApp.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using FinApp.EnumValue;
 
 namespace FinApp.Controllers
 {
@@ -19,6 +20,8 @@ namespace FinApp.Controllers
         /// <summary>
         /// Get all users.
         /// </summary>
+        /// <param name="page">Users list page.</param>
+        /// <param name="sort">Order sorting.</param>
         /// <returns>List of all users.</returns>
         /// <response code="200">Success.</response>
         /// <response code="401">Unauthorized.</response>
@@ -29,9 +32,9 @@ namespace FinApp.Controllers
         [HttpGet]
         [Authorize(Roles = "Administrator")]
         [Route("GetAll")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(int page, UserSort sort)
         {
-            var users = await userService.GetAll();
+            var users = await userService.GetAll(sort, page);
 
             return Ok(users);
         }

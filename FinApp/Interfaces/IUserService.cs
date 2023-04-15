@@ -1,4 +1,5 @@
 ﻿using FinApp.Entity;
+using FinApp.EnumValue;
 using FinApp.MiddleEntity;
 
 namespace FinApp.Interface
@@ -16,9 +17,11 @@ namespace FinApp.Interface
 
         /// <summary>
         /// Get all users.
+        /// <param name="page">Users list page.</param>
+        /// <param name="UserSort">Order sorting.</param>
         /// </summary>
         /// <returns>Get all users.</returns>
-        Task<List<User>> GetAll();
+        Task<ResponseType<User>> GetAll(UserSort UserSort, int page);
 
         /// <summary>
         /// Get user by ID.
@@ -41,6 +44,5 @@ namespace FinApp.Interface
         /// <param name="userCreateData">Desired user data.</param>
         /// <returns>Created user.</returns>
         Task<int> Create(UserCreateData userCreateData, int id);
-
     }
 }

@@ -1,4 +1,5 @@
 ﻿using FinApp.Entity;
+using FinApp.EnumValue;
 using FinApp.MiddleEntity;
 
 namespace FinApp.Interfaces
@@ -33,10 +34,12 @@ namespace FinApp.Interfaces
         /// <summary>
         /// Get all expenses for the specified period.
         /// </summary>
+        /// <param name="page">Users list page.</param>
+        /// <param name="sort">Order sorting.</param>
         /// <param name="userId">Current user ID.</param>
         /// <param name="moneyFlow">Specified period of time.</param>
         /// <returns>List of expenses.</returns>
-        Task<List<Expense>> GetAll(int userId, MoneyFlow moneyFlow);
+        Task<ResponseType<Expense>> GetAll(int userId, MoneyFlow moneyFlow, int page, MoneyFlowSort sort);
 
         /// <summary>
         /// Updates expense data.

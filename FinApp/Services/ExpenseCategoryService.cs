@@ -1,8 +1,10 @@
 ﻿using FinApp.DataBase;
 using FinApp.Entity;
+using FinApp.EnumValue;
 using FinApp.Exceptions;
 using FinApp.Interfaces;
 using FinApp.MiddleEntity;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinApp.Services
@@ -16,11 +18,28 @@ namespace FinApp.Services
             _context = context;
         }
 
-        public async Task<List<ExpenseCategory>> GetAll(int userId)
+        public async Task<ResponseType<ExpenseCategory>> GetAll(int userId, int page, CategotiesSort sort)
         {
-            var expenseCategory = await _context.expenseCategories.Where(x => x.UserId == userId).ToListAsync();
+            var pageResults = 5f;
+            var pageCount = Math.Ceiling(_context.expenseCategories.Count() / pageResults);
 
-            return expenseCategory;
+            IQueryable<ExpenseCategory> query = _context.expenseCategories;
+            query = sort switch
+            {
+                CategotiesSort.NameAsc => query.OrderBy(x => x.Name),
+                CategotiesSort.NameDesc => query.OrderByDescending(x => x.Name),
+            };
+
+            var expenseCategory = await query.Where(x => x.UserId == userId).Skip((page - 3) * Convert.ToInt32(pageResults)).Take(Convert.ToInt32(pageResults)).ToListAsync();
+            
+            var response = new ResponseType<ExpenseCategory>
+            {
+                ListOfType = expenseCategory,
+                CurrentPage = page,
+                CountPage = Convert.ToInt32(pageCount)
+            };
+
+            return response;
         }
 
         public async Task<ExpenseCategory> Get(int id, int userId)

@@ -1,4 +1,5 @@
-﻿using FinApp.Interfaces;
+﻿using FinApp.EnumValue;
+using FinApp.Interfaces;
 using FinApp.MiddleEntity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,10 +30,10 @@ namespace FinApp.Controllers
         [HttpGet]
         [Authorize(Roles = "Administrator")]
         [Route("GetAll")]
-        public async Task<IActionResult> GetList()
+        public async Task<IActionResult> GetList(int page, CategotiesSort sort)
         {
             var userId = GetUserId();
-            var expenseCategory = await expenseCategoryService.GetAll(userId);
+            var expenseCategory = await expenseCategoryService.GetAll(userId, page, sort);
 
             return Ok(expenseCategory);
         }

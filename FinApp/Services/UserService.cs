@@ -4,6 +4,7 @@ using FinApp.Exceptions;
 using FinApp.MiddleEntity;
 using FinApp.Interface;
 using Microsoft.EntityFrameworkCore;
+using FinApp.EnumValue;
 
 namespace FinApp.Services
 {
@@ -17,11 +18,36 @@ namespace FinApp.Services
             _context = context;
         }
 
-        public async Task<List<User>> GetAll()
+        public async Task<ResponseType<User>> GetAll(UserSort sort, int page)
         {
-            var users = await _context.user.ToListAsync();
+            var pageResults = 5f;
+            var pageCount = Math.Ceiling(_context.user.Count() / pageResults);
 
-            return users;
+            IQueryable<User> query = _context.user;
+            query = sort switch
+            {
+                UserSort.EmailAsc => query.OrderBy(x => x.Email),
+                UserSort.EmailDesc => query.OrderByDescending(x => x.Email),
+                UserSort.NameDesc => query.OrderByDescending(x => x.Name),
+                UserSort.NameAsc => query.OrderBy(x => x.Name),
+                UserSort.LastNameAsc => query.OrderBy(x => x.LastName),
+                UserSort.LastNameDesc => query.OrderByDescending(x => x.LastName),
+                UserSort.MiddleNameAsc => query.OrderBy(x => x.MiddleName),
+                UserSort.MiddleNameDesc => query.OrderByDescending(x => x.MiddleName),
+                UserSort.DateOfBirthAsc => query.OrderBy(x => x.DateOfBirth),
+                UserSort.DateOfBirthDesc => query.OrderByDescending(x => x.DateOfBirth),
+            };
+
+            var orderedUsers = await query.Skip((page - 3) * Convert.ToInt32(pageResults)).Take(Convert.ToInt32(pageResults)).ToListAsync();
+
+            var response = new ResponseType<User>
+            {
+                ListOfType = orderedUsers,
+                CurrentPage = page,
+                CountPage = Convert.ToInt32(pageCount)
+            };
+
+            return response;
         }
 
         public async Task<User> Get(int id)
