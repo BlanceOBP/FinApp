@@ -17,11 +17,10 @@ namespace FinApp.Interface
 
         /// <summary>
         /// Get all users.
-        /// <param name="page">Users list page.</param>
-        /// <param name="UserSort">Order sorting.</param>
+        /// <param name="sort">Users list page and order sorting.</param>
         /// </summary>
         /// <returns>Get all users.</returns>
-        Task<ResponseType<User>> GetAll(UserSort UserSort, int page);
+        Task<CollectionDto<User>> GetAll(UserFlow sort);
 
         /// <summary>
         /// Get user by ID.

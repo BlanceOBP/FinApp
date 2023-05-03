@@ -32,9 +32,9 @@ namespace FinApp.Controllers
         [HttpGet]
         [Authorize(Roles = "Administrator")]
         [Route("GetAll")]
-        public async Task<IActionResult> GetAll(int page, UserSort sort)
+        public async Task<IActionResult> GetAll(UserFlow userFlow)
         {
-            var users = await userService.GetAll(sort, page);
+            var users = await userService.GetAll(userFlow);
 
             return Ok(users);
         }

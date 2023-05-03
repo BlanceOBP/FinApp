@@ -38,7 +38,7 @@ namespace FinApp.Interfaces
         /// <param name="sort">Order sorting.</param>
         /// <param name="userId">Current user ID.</param>
         /// <returns>All expense categories of current user.</returns>
-        Task<ResponseType<ExpenseCategory>> GetAll(int userId, int page, CategotiesSort sort);
+        Task<CollectionDto<ExpenseCategory>> GetAll(CategotiesFlow flow);
 
         /// <summary>
         /// Updates expense category data.

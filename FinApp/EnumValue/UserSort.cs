@@ -1,16 +1,18 @@
-﻿namespace FinApp.EnumValue
+﻿using System.ComponentModel;
+
+namespace FinApp.EnumValue
 {
     public enum UserSort
     {
-        NameAsc,
-        NameDesc,
-        LastNameAsc,
-        LastNameDesc,
-        MiddleNameAsc,
-        MiddleNameDesc,
-        DateOfBirthAsc,
-        DateOfBirthDesc,
-        EmailAsc,
-        EmailDesc
+        [Description("Name")]
+        Name,
+        [Description("LastName")]
+        LastName,
+        [Description("MiddleName")]
+        MiddleName,
+        [Description("DateOfBirth")]
+        DateOfBirth,
+        [Description("Email")]
+        Email
     }
 }

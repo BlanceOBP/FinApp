@@ -17,29 +17,25 @@ namespace FinApp.Services
             _context = context;
         }
 
-        public async Task<ResponseType<Income>> GetAll(int userId, MoneyFlow moneyFlow, int page, MoneyFlowSort sort)
+        public async Task<CollectionDto<Income>> GetAll(MoneyFS fS)
         {
-            var pageResults = 5f;
-            var pageCount = Math.Ceiling(_context.income.Count() / pageResults);
+            PaginationContext paginationContext = new PaginationContext { Page = fS.Page };
 
             IQueryable<Income> query = _context.income;
-            query = sort switch
+            query = fS.Sort switch
             {
-                MoneyFlowSort.NameAsk => query.OrderBy(x => x.Name),
-                MoneyFlowSort.NameDesc => query.OrderByDescending(x => x.Name),
-                MoneyFlowSort.SummaryAsk => query.OrderBy(x => x.Summary),
-                MoneyFlowSort.SummaryDesc => query.OrderByDescending(x => x.Summary),
-                MoneyFlowSort.CategoryAsk => query.OrderBy(x => x.SourceOfIncomeId),
-                MoneyFlowSort.CategoryDesc => query.OrderByDescending(x => x.SourceOfIncomeId)
+                MoneyFlowSort.Name => query.OrderBy(x => x.Name),
+                MoneyFlowSort.Summary => query.OrderBy(x => x.Summary),
+                MoneyFlowSort.Category => query.OrderBy(x => x.SourceOfIncomeId),
+                _ => query.OrderBy((SortingDirection?)fS.Sort, propertyName: fS.Sort.GetDescription())
             };
 
-            var income = await query.Where(x => x.UserId == userId && x.CreatedAt >= moneyFlow.From && x.CreatedAt <= moneyFlow.To).Skip((page - 3) * Convert.ToInt32(pageResults)).Take(Convert.ToInt32(pageResults)).ToListAsync();
+            var income = await query.Where(x => x.UserId == fS.UserId && x.CreatedAt >= fS.MoneyFlow.From && x.CreatedAt <= fS.MoneyFlow.To).Skip(Convert.ToInt32(paginationContext.OffSet)).Take(paginationContext.PageSize).ToListAsync();
 
-            var response = new ResponseType<Income>
+            var response = new CollectionDto<Income>
             {
-                ListOfType = income,
-                CurrentPage = page,
-                CountPage = Convert.ToInt32(pageCount)
+                Items = income,
+                Total = _context.income.Count()
             };
 
             return response;

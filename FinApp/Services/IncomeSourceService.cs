@@ -19,25 +19,23 @@ namespace FinApp.Services
             _context = context;
         }
 
-        public async Task<ResponseType<SourceOfIncome>> GetAll(int userId, int page, CategotiesSort sort)
+        public async Task<CollectionDto<SourceOfIncome>> GetAll(CategotiesFlow sort)
         {
-            var pageResults = 5f;
-            var pageCount = Math.Ceiling(_context.sourcesOfIncome.Count() / pageResults);
+            PaginationContext paginationContext = new PaginationContext { Page = sort.Page };
 
             IQueryable<SourceOfIncome> query = _context.sourcesOfIncome;
-            query = sort switch
+            query = sort.Sort switch
             {
-                CategotiesSort.NameAsc => query.OrderBy(x => x.Name),
-                CategotiesSort.NameDesc => query.OrderByDescending(x => x.Name),
+                CategotiesSort.Name => query.OrderBy(x => x.Name),
+                _ => query.OrderBy((SortingDirection?)sort.Sort, propertyName: sort.Sort.GetDescription())
             };
 
-            var incomeSources = await query.Where(x => x.UserId == userId).Skip((page - 3) * Convert.ToInt32(pageResults)).Take(Convert.ToInt32(pageResults)).ToListAsync();
+            var incomeSources =  await query.Where(x => x.UserId == sort.UserId).Skip(Convert.ToInt32(paginationContext.OffSet)).Take(paginationContext.PageSize).ToListAsync();
 
-            var response = new ResponseType<SourceOfIncome>
+            var response = new CollectionDto<SourceOfIncome>
             {
-                ListOfType = incomeSources,
-                CurrentPage = page,
-                CountPage = Convert.ToInt32(pageCount)
+                Items = incomeSources,
+                Total = _context.sourcesOfIncome.Count()
             };
 
             return response;

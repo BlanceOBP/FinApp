@@ -17,29 +17,25 @@ namespace FinApp.Services
             _context = context;
         }
 
-        public async Task<ResponseType<Expense>> GetAll(int userId, MoneyFlow moneyFlow, int page, MoneyFlowSort sort)
+        public async Task<CollectionDto<Expense>> GetAll(MoneyFS fS)
         {
-            var pageResults = 5f;
-            var pageCount = Math.Ceiling(_context.expenses.Count() / pageResults);
+            PaginationContext paginationContext = new PaginationContext { Page = fS.Page };
 
             IQueryable<Expense> query = _context.expenses;
-            query = sort switch
+            query = fS.Sort switch
             {
-                MoneyFlowSort.NameAsk => query.OrderBy(x => x.Name),
-                MoneyFlowSort.NameDesc => query.OrderByDescending(x => x.Name),
-                MoneyFlowSort.SummaryAsk => query.OrderBy(x => x.Summary),
-                MoneyFlowSort.SummaryDesc => query.OrderByDescending(x => x.Summary),
-                MoneyFlowSort.CategoryAsk => query.OrderBy(x => x.ExpenseCategoryId),
-                MoneyFlowSort.CategoryDesc => query.OrderByDescending(x => x.ExpenseCategoryId)
+                MoneyFlowSort.Name => query.OrderBy(x => x.Name),
+                MoneyFlowSort.Summary => query.OrderBy(x => x.Summary),
+                MoneyFlowSort.Category => query.OrderBy(x => x.ExpenseCategoryId),
+                _ => query.OrderBy((SortingDirection?)fS.Sort, propertyName: fS.Sort.GetDescription())
             };
 
-            var expense = await query.Where(x => x.UserId == userId && x.CreatedAt >= moneyFlow.From && x.CreatedAt <= moneyFlow.To).Skip((page - 3) * Convert.ToInt32(pageResults)).Take(Convert.ToInt32(pageResults)).ToListAsync();
+            var expense = await query.Where(x => x.UserId == fS.UserId && x.CreatedAt >= fS.MoneyFlow.From && x.CreatedAt <= fS.MoneyFlow.To).Skip(Convert.ToInt32(paginationContext.OffSet)).Take(paginationContext.PageSize).ToListAsync();
 
-            var response = new ResponseType<Expense>
+            var response = new CollectionDto<Expense>
             {
-                ListOfType = expense,
-                CurrentPage = page,
-                CountPage = Convert.ToInt32(pageCount)
+                Items = expense,
+                Total = _context.expenses.Count()
             };
 
             return response;

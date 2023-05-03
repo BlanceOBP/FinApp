@@ -30,10 +30,10 @@ namespace FinApp.Controllers
         [HttpGet]
         [Authorize(Roles = "Administrator")]
         [Route("GetAll")]
-        public async Task<IActionResult> GetList(int page, CategotiesSort sort)
+        public async Task<IActionResult> GetList(CategotiesFlow categotiesFlow)
         {
-            var userId = GetUserId();
-            var expenseCategory = await expenseCategoryService.GetAll(userId, page, sort);
+            categotiesFlow.UserId = GetUserId();
+            var expenseCategory = await expenseCategoryService.GetAll(categotiesFlow);
 
             return Ok(expenseCategory);
         }

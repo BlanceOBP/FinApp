@@ -34,11 +34,9 @@ namespace FinApp.Interfaces
         /// <summary>
         /// Get all income source categories.
         /// </summary>
-        /// <param name="page">Users list page.</param>
-        /// <param name="sort">Order sorting.</param>
-        /// <param name="userId">Current user ID.</param>
+        /// <param name="sort">Order sorting, current user ID and users list page .</param>
         /// <returns>Get all income source category.</returns>
-        Task<ResponseType<SourceOfIncome>> GetAll(int userId, int page, CategotiesSort sort);
+        Task<CollectionDto<SourceOfIncome>> GetAll(CategotiesFlow sort);
 
         /// <summary>
         /// Updates income source category data.

@@ -18,25 +18,23 @@ namespace FinApp.Services
             _context = context;
         }
 
-        public async Task<ResponseType<ExpenseCategory>> GetAll(int userId, int page, CategotiesSort sort)
+        public async Task<CollectionDto<ExpenseCategory>> GetAll(CategotiesFlow flow)
         {
-            var pageResults = 5f;
-            var pageCount = Math.Ceiling(_context.expenseCategories.Count() / pageResults);
+            PaginationContext paginationContext = new PaginationContext { Page = flow.Page };
 
             IQueryable<ExpenseCategory> query = _context.expenseCategories;
-            query = sort switch
+            query = flow.Sort switch
             {
-                CategotiesSort.NameAsc => query.OrderBy(x => x.Name),
-                CategotiesSort.NameDesc => query.OrderByDescending(x => x.Name),
+                CategotiesSort.Name => query.OrderBy(x => x.Name),
+                _ => query.OrderBy((SortingDirection?)flow.Sort, propertyName: flow.Sort.GetDescription())
             };
 
-            var expenseCategory = await query.Where(x => x.UserId == userId).Skip((page - 3) * Convert.ToInt32(pageResults)).Take(Convert.ToInt32(pageResults)).ToListAsync();
-            
-            var response = new ResponseType<ExpenseCategory>
+            var expenseCategory = await query.Where(x => x.UserId == flow.UserId).Skip(Convert.ToInt32(paginationContext.OffSet)).Take(paginationContext.PageSize).ToListAsync();
+
+            var response = new CollectionDto<ExpenseCategory>
             {
-                ListOfType = expenseCategory,
-                CurrentPage = page,
-                CountPage = Convert.ToInt32(pageCount)
+                Items = expenseCategory,
+                Total = _context.expenseCategories.Count()
             };
 
             return response;

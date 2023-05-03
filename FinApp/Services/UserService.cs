@@ -5,6 +5,9 @@ using FinApp.MiddleEntity;
 using FinApp.Interface;
 using Microsoft.EntityFrameworkCore;
 using FinApp.EnumValue;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.ComponentModel;
 
 namespace FinApp.Services
 {
@@ -18,33 +21,27 @@ namespace FinApp.Services
             _context = context;
         }
 
-        public async Task<ResponseType<User>> GetAll(UserSort sort, int page)
+        public async Task<CollectionDto<User>> GetAll(UserFlow sort)
         {
-            var pageResults = 5f;
-            var pageCount = Math.Ceiling(_context.user.Count() / pageResults);
-
+            PaginationContext paginationContext = new PaginationContext { Page = sort.Page,};
+          
             IQueryable<User> query = _context.user;
-            query = sort switch
-            {
-                UserSort.EmailAsc => query.OrderBy(x => x.Email),
-                UserSort.EmailDesc => query.OrderByDescending(x => x.Email),
-                UserSort.NameDesc => query.OrderByDescending(x => x.Name),
-                UserSort.NameAsc => query.OrderBy(x => x.Name),
-                UserSort.LastNameAsc => query.OrderBy(x => x.LastName),
-                UserSort.LastNameDesc => query.OrderByDescending(x => x.LastName),
-                UserSort.MiddleNameAsc => query.OrderBy(x => x.MiddleName),
-                UserSort.MiddleNameDesc => query.OrderByDescending(x => x.MiddleName),
-                UserSort.DateOfBirthAsc => query.OrderBy(x => x.DateOfBirth),
-                UserSort.DateOfBirthDesc => query.OrderByDescending(x => x.DateOfBirth),
+            query = sort.Sort switch
+            { 
+                UserSort.Name => query.OrderBy(user => user.Name),
+                UserSort.Email => query.OrderBy(user => user.Email),
+                UserSort.LastName => query.OrderBy(user => user.LastName),
+                UserSort.MiddleName => query.OrderBy(user => user.MiddleName),
+                UserSort.DateOfBirth => query.OrderBy(user => user.DateOfBirth),
+                _ => query.OrderBy((SortingDirection?)sort.Sort, propertyName:sort.Sort.GetDescription())
             };
 
-            var orderedUsers = await query.Skip((page - 3) * Convert.ToInt32(pageResults)).Take(Convert.ToInt32(pageResults)).ToListAsync();
+            var orderedUsers = await query.Skip(Convert.ToInt32(paginationContext.OffSet)).Take(paginationContext.PageSize).ToListAsync();
 
-            var response = new ResponseType<User>
+            var response = new CollectionDto<User>
             {
-                ListOfType = orderedUsers,
-                CurrentPage = page,
-                CountPage = Convert.ToInt32(pageCount)
+                Items = orderedUsers,
+                Total = _context.user.Count()
             };
 
             return response;
