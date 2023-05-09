@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace FinApp
 {
-    public static class Sorting
+    public static class QueryableExtensions
     {
         /// <summary>
         /// Сортировка по напралению и свойству

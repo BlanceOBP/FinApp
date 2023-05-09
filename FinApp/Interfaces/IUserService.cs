@@ -1,6 +1,7 @@
 ﻿using FinApp.Entity;
 using FinApp.EnumValue;
 using FinApp.MiddleEntity;
+using FinApp.SearchContext;
 
 namespace FinApp.Interface
 {
@@ -20,14 +21,14 @@ namespace FinApp.Interface
         /// <param name="sort">Users list page and order sorting.</param>
         /// </summary>
         /// <returns>Get all users.</returns>
-        Task<CollectionDto<User>> GetAll(UserFlow sort);
+        Task<CollectionDto<Users>> GetAll(UserFlowSearchContext sort);
 
         /// <summary>
         /// Get user by ID.
         /// </summary>
         /// <param name="id">Desired user ID.</param>
         /// <returns>User with the specified ID.</returns>
-        Task<User> Get(int id);
+        Task<Users> Get(int id);
 
         /// <summary>
         /// Updates current user data.

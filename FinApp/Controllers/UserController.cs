@@ -3,6 +3,7 @@ using FinApp.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using FinApp.EnumValue;
+using FinApp.SearchContext;
 
 namespace FinApp.Controllers
 {
@@ -32,7 +33,7 @@ namespace FinApp.Controllers
         [HttpGet]
         [Authorize(Roles = "Administrator")]
         [Route("GetAll")]
-        public async Task<IActionResult> GetAll(UserFlow userFlow)
+        public async Task<IActionResult> GetAll(UserFlowSearchContext userFlow)
         {
             var users = await userService.GetAll(userFlow);
 

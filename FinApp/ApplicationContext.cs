@@ -9,11 +9,11 @@ namespace FinApp.DataBase
     /// </summary>
     public class ApplicationContext : DbContext
     {
-        public DbSet<User> user { get; set; }
-        public DbSet<Income> income { get; set; }
-        public DbSet<SourceOfIncome> sourcesOfIncome { get; set; }
-        public DbSet<Expense> expenses { get; set; }
-        public DbSet<ExpenseCategory> expenseCategories { get; set; }
+        public DbSet<Users> User { get; set; }
+        public DbSet<Incomes> Income { get; set; }
+        public DbSet<SourceOfIncomes> SourcesOfIncome { get; set; }
+        public DbSet<Expenses> Expenses { get; set; }
+        public DbSet<ExpenseCategories> ExpenseCategories { get; set; }
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {

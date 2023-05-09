@@ -8,6 +8,7 @@ using FinApp.EnumValue;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel;
+using FinApp.SearchContext;
 
 namespace FinApp.Services
 {
@@ -21,35 +22,31 @@ namespace FinApp.Services
             _context = context;
         }
 
-        public async Task<CollectionDto<User>> GetAll(UserFlow sort)
+        public async Task<CollectionDto<Users>> GetAll(UserFlowSearchContext sort)
         {
             PaginationContext paginationContext = new PaginationContext { Page = sort.Page,};
           
-            IQueryable<User> query = _context.user;
+            IQueryable<Users> query = _context.User;
             query = sort.Sort switch
             { 
-                UserSort.Name => query.OrderBy(user => user.Name),
-                UserSort.Email => query.OrderBy(user => user.Email),
-                UserSort.LastName => query.OrderBy(user => user.LastName),
-                UserSort.MiddleName => query.OrderBy(user => user.MiddleName),
-                UserSort.DateOfBirth => query.OrderBy(user => user.DateOfBirth),
-                _ => query.OrderBy((SortingDirection?)sort.Sort, propertyName:sort.Sort.GetDescription())
+                null => query.OrderBy(user => user.Name),
+                _ => query.OrderBy((SortingDirection?)sort.Sort, propertyName: sort.Sort.GetDescription())
             };
 
             var orderedUsers = await query.Skip(Convert.ToInt32(paginationContext.OffSet)).Take(paginationContext.PageSize).ToListAsync();
 
-            var response = new CollectionDto<User>
+            var response = new CollectionDto<Users>
             {
                 Items = orderedUsers,
-                Total = _context.user.Count()
+                Total = _context.User.Count()
             };
 
             return response;
         }
 
-        public async Task<User> Get(int id)
+        public async Task<Users> Get(int id)
         {
-            var user = await _context.user.SingleOrDefaultAsync(x => x.Id == id);
+            var user = await _context.User.SingleOrDefaultAsync(x => x.Id == id);
             if (user == null)
                 throw new IdIsNotFound();
 
@@ -58,11 +55,11 @@ namespace FinApp.Services
 
         public async Task<int> Create(UserCreateData userCreateData, int id)
         {
-            var userExist = _context.user.SingleOrDefaultAsync(x => x.Id == id);
+            var userExist = _context.User.SingleOrDefaultAsync(x => x.Id == id);
             if (userExist != null)
                 throw new UserExists();
 
-            var newUser = new User
+            var newUser = new Users
             {
                 Email = userCreateData.Email,
                 Password = BCrypt.Net.BCrypt.HashPassword(userCreateData.Password),
@@ -74,7 +71,7 @@ namespace FinApp.Services
                 CreateOfDate = DateTime.Now,
             };
 
-            _context.user.AddAsync(newUser);
+            _context.User.AddAsync(newUser);
             await _context.SaveChangesAsync();
 
             return newUser.Id;
@@ -82,35 +79,35 @@ namespace FinApp.Services
 
         public async Task Update(UserUpdateData userUpdateData, int id)
         {
-            var user1 = new User();
-            var user = _context.user.SingleOrDefaultAsync(x => x.Id == id);
+            var user1 = new Users();
+            var user = _context.User.SingleOrDefaultAsync(x => x.Id == id);
             if (user == null)
                 throw new UserNotFounfException();
 
 
-            if (_context.user.SingleOrDefault(x => x.Email == userUpdateData.Email && x.Id != id) != null)
+            if (_context.User.SingleOrDefault(x => x.Email == userUpdateData.Email && x.Id != id) != null)
                 throw new InputLoginException();
             user1.Email = userUpdateData.Email;
             user1.Password = BCrypt.Net.BCrypt.HashPassword(userUpdateData.Password);
-            if (_context.user.SingleOrDefault(x => x.Login == userUpdateData.Login && x.Id != id) != null)
+            if (_context.User.SingleOrDefault(x => x.Login == userUpdateData.Login && x.Id != id) != null)
                 throw new InputLoginException();
             user1.Login = userUpdateData.Login;
             user1.CreateOfEdit = DateTime.Now;
 
-            _context.user.Update(user1);
+            _context.User.Update(user1);
             await _context.SaveChangesAsync();
 
         }
 
         public async Task Delete(int id)
         {
-            var userToDelete = await _context.user.SingleOrDefaultAsync(x => x.Id == id);
+            var userToDelete = await _context.User.SingleOrDefaultAsync(x => x.Id == id);
             if (userToDelete == null)
             {
                 throw new UserIsDeletedException();
             }
 
-            _context.user.Remove(userToDelete);
+            _context.User.Remove(userToDelete);
             await _context.SaveChangesAsync();
         }
     }

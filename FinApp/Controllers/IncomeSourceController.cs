@@ -1,6 +1,7 @@
 ﻿using FinApp.EnumValue;
 using FinApp.Interfaces;
 using FinApp.MiddleEntity;
+using FinApp.SearchContext;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,8 +32,8 @@ namespace FinApp.Controllers
         [ProducesResponseType(403)]
         [HttpGet]
         [Authorize(Roles = "Administrator")]
-        [Route("GetAll")]
-        public async Task<IActionResult> GetList(CategotiesFlow categotiesFlow)
+        [Route("get-all")]
+        public async Task<IActionResult> GetList(CategotiesFlowSearchContext categotiesFlow)
         {
             categotiesFlow.UserId = GetUserId();
             var incomeSource = await incomeSourceService.GetAll(categotiesFlow);
@@ -55,7 +56,7 @@ namespace FinApp.Controllers
         [ProducesResponseType(403)]
         [HttpGet]
         [Authorize(Roles = "Administrator")]
-        [Route("Get")]
+        [Route("get")]
         public async Task<IActionResult> Get(int id)
         {
             var userId = GetUserId();
@@ -73,7 +74,7 @@ namespace FinApp.Controllers
         [ProducesResponseType(204)]
         [HttpPost]
         [Authorize(Roles = "Administrator,User")]
-        [Route("Create")]
+        [Route("create")]
         public async Task<IActionResult> Create([FromBody] IncomeCreateData incomeCreateData)
         {
             var userId = GetUserId();
@@ -96,7 +97,7 @@ namespace FinApp.Controllers
         [ProducesResponseType(401)]
         [Authorize(Roles = "Administrator,User")]
         [HttpPut]
-        [Route("Update")]
+        [Route("update")]
         public async Task<IActionResult> Update([FromBody] IncomeUpdateData incomeUpdateData)
         {
             var userId = GetUserId();
@@ -121,7 +122,7 @@ namespace FinApp.Controllers
         [ProducesResponseType(403)]
         [HttpDelete]
         [Authorize(Roles = "Administrator")]
-        [Route("Delete")]
+        [Route("delete")]
         public async Task<IActionResult> Delete(int id)
         {
             await incomeSourceService.Delete(id);

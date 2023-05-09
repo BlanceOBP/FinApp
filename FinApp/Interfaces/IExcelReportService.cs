@@ -11,7 +11,7 @@ namespace FinApp.Interfaces
         /// <param name="userId">Current user ID.</param>
         /// <param name="moneyFlow">Period of time input.</param>
         /// <returns></returns>
-        Task<XLWorkbook> GetReport(int userId, MoneyFlow moneyFlow);
+        Task<XLWorkbook> GetReport(int userId, MoneyFlowSearchContext moneyFlow);
 
         /// <summary>
         /// 

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 
-namespace FinApp.MiddleEntity
+namespace FinApp.SearchContext
 {
     public class PaginationContext
     {

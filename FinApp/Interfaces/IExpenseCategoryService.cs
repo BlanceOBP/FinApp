@@ -1,6 +1,7 @@
 ﻿using FinApp.Entity;
 using FinApp.EnumValue;
 using FinApp.MiddleEntity;
+using FinApp.SearchContext;
 
 namespace FinApp.Interfaces
 {
@@ -29,7 +30,7 @@ namespace FinApp.Interfaces
         /// <param name="id">Desired expense category ID.</param>
         /// <param name="userId">Current user ID.</param>
         /// <returns>Expense category with the specified ID.</returns>
-        Task<ExpenseCategory> Get(int id, int userId);
+        Task<ExpenseCategories> Get(int id, int userId);
 
         /// <summary>
         /// Get all expense categories.
@@ -38,7 +39,7 @@ namespace FinApp.Interfaces
         /// <param name="sort">Order sorting.</param>
         /// <param name="userId">Current user ID.</param>
         /// <returns>All expense categories of current user.</returns>
-        Task<CollectionDto<ExpenseCategory>> GetAll(CategotiesFlow flow);
+        Task<CollectionDto<ExpenseCategories>> GetAll(CategotiesFlowSearchContext flow);
 
         /// <summary>
         /// Updates expense category data.

@@ -4,16 +4,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace FinApp.Entity
 {
     /// <summary>
-    /// Represents the expense category.
+    /// Represents the source of income.
     /// </summary>
-    public class ExpenseCategory
+    public class SourceOfIncomes
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         public string Name { get; set; }
 
-        [ForeignKey("User")]
+        [ForeignKey("Users")]
         public int UserId { get; set; }
     }
 }

@@ -1,9 +1,9 @@
-﻿namespace FinApp.MiddleEntity
+﻿namespace FinApp.SearchContext
 {
     /// <summary>
     /// Represents the middleware search money flow for income.
     /// </summary>
-    public class MoneyFlow
+    public class MoneyFlowSearchContext
     {
         public DateTime From { get; set; }
 

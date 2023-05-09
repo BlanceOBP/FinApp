@@ -14,7 +14,7 @@ namespace FinApp.Services
             _context = context;
         }
 
-        public async Task<XLWorkbook> GetReport(int userId, MoneyFlow moneyFlow)
+        public async Task<XLWorkbook> GetReport(int userId, MoneyFlowSearchContext moneyFlow)
         {
             using var workBook = new XLWorkbook();
 
@@ -22,7 +22,7 @@ namespace FinApp.Services
 
             var incomeSheet = wb.AddWorksheet("Income").SetFirstCell($"Income from {moneyFlow.From} to {moneyFlow.To}")
             .AddRow();
-            var incomeList = _context.income.Where(x => x.UserId == userId && x.CreatedAt >= moneyFlow.From && x.CreatedAt <= moneyFlow.To).OrderBy(x => x.Id).Select(x => new { x.Id, x.Name, x.Summary, x.CreatedAt });
+            var incomeList = _context.Income.Where(x => x.UserId == userId && x.CreatedAt >= moneyFlow.From && x.CreatedAt <= moneyFlow.To).OrderBy(x => x.Id).Select(x => new { x.Id, x.Name, x.Summary, x.CreatedAt });
             incomeSheet.Column(1).Width = 20;
             incomeSheet.Columns().AdjustToContents(2, incomeList.Count() + 2);
 
@@ -34,7 +34,7 @@ namespace FinApp.Services
             incomeTableRange.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
 
             var expenseSheet = wb.AddWorksheet("Expense").SetFirstCell($"Expense from {moneyFlow.From} to {moneyFlow.To}").AddRow();
-            var expenseList = _context.expenses.Where(x => x.UserId == userId && x.CreatedAt >= moneyFlow.From && x.CreatedAt <= moneyFlow.To).OrderBy(x => x.Id).Select(x => new { x.Id, x.Name, x.Summary, x.CreatedAt });
+            var expenseList = _context.Expenses.Where(x => x.UserId == userId && x.CreatedAt >= moneyFlow.From && x.CreatedAt <= moneyFlow.To).OrderBy(x => x.Id).Select(x => new { x.Id, x.Name, x.Summary, x.CreatedAt });
             expenseSheet.Column(1).Width = 20;
             expenseSheet.Columns().AdjustToContents(2, expenseList.Count() + 2);
 
@@ -63,7 +63,7 @@ namespace FinApp.Services
                 var summary = Convert.ToSingle(expenseSheet.Cell($"C{expenseRowNumber}").GetString());
                 var date = expenseSheet.Cell($"D{expenseRowNumber}").GetDateTime();
 
-                var expensesRecordNow = _context.expenses.SingleOrDefault(x => x.Id == id);
+                var expensesRecordNow = _context.Expenses.SingleOrDefault(x => x.Id == id);
                 if (expensesRecordNow.UserId == userId)
                 {
                     expensesRecordNow.Name = name;
@@ -83,7 +83,7 @@ namespace FinApp.Services
                 var amount = Convert.ToSingle(incomeSheet.Cell($"C{incomeRowNumber}").GetString());
                 var date = incomeSheet.Cell($"D{incomeRowNumber}").GetDateTime();
 
-                var incomeRecordNow = _context.income.SingleOrDefault(x => x.Id == id);
+                var incomeRecordNow = _context.Income.SingleOrDefault(x => x.Id == id);
                 if (incomeRecordNow.UserId == userId)
                 {
                     incomeRecordNow.Name = name;

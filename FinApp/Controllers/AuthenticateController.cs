@@ -11,7 +11,7 @@ using System.Security.Claims;
 namespace FinApp.Controllers
 {
     [ApiController]
-    [Route("api/Authenticate")]
+    [Route("api/auth")]
     public class AuthenticateController : ControllerBase
     {
         private readonly IAuthService _authService;
@@ -29,7 +29,7 @@ namespace FinApp.Controllers
         /// <exception cref="LoginException">Incorrect data</exception>
         /// <response code="200">User successfully logged in</response>
         /// <response code="400">Incorrect data</response>
-        [Route("Authorize")]
+        [Route("authorize")]
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
@@ -47,7 +47,7 @@ namespace FinApp.Controllers
         /// <exception cref="InputLoginException">Login or email is taken</exception>
         /// <response code="200">Registration is successfully</response>
         /// <response code="400">Login or email is taken</response> 
-        [Route("Register")]
+        [Route("register")]
         [HttpPost]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]

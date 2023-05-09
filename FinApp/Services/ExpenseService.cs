@@ -4,6 +4,7 @@ using FinApp.EnumValue;
 using FinApp.Exceptions;
 using FinApp.Interfaces;
 using FinApp.MiddleEntity;
+using FinApp.SearchContext;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinApp.Services
@@ -17,33 +18,31 @@ namespace FinApp.Services
             _context = context;
         }
 
-        public async Task<CollectionDto<Expense>> GetAll(MoneyFS fS)
+        public async Task<CollectionDto<Expenses>> GetAll(MoneyFSSearchContext fS)
         {
             PaginationContext paginationContext = new PaginationContext { Page = fS.Page };
 
-            IQueryable<Expense> query = _context.expenses;
+            IQueryable<Expenses> query = _context.Expenses;
             query = fS.Sort switch
             {
-                MoneyFlowSort.Name => query.OrderBy(x => x.Name),
-                MoneyFlowSort.Summary => query.OrderBy(x => x.Summary),
-                MoneyFlowSort.Category => query.OrderBy(x => x.ExpenseCategoryId),
+                null => query.OrderBy(x => x.Name),
                 _ => query.OrderBy((SortingDirection?)fS.Sort, propertyName: fS.Sort.GetDescription())
             };
 
             var expense = await query.Where(x => x.UserId == fS.UserId && x.CreatedAt >= fS.MoneyFlow.From && x.CreatedAt <= fS.MoneyFlow.To).Skip(Convert.ToInt32(paginationContext.OffSet)).Take(paginationContext.PageSize).ToListAsync();
 
-            var response = new CollectionDto<Expense>
+            var response = new CollectionDto<Expenses>
             {
                 Items = expense,
-                Total = _context.expenses.Count()
+                Total = _context.Expenses.Count()
             };
 
             return response;
         }
 
-        public async Task<Expense> Get(int id, int userId)
+        public async Task<Expenses> Get(int id, int userId)
         {
-            var expense = await _context.expenses.SingleOrDefaultAsync(x => x.Id == id);
+            var expense = await _context.Expenses.SingleOrDefaultAsync(x => x.Id == id);
 
             if (expense == null)
                 throw new ExpenseNotFoudException();
@@ -55,14 +54,14 @@ namespace FinApp.Services
 
         public async Task<int> Create(ExpenseCreateData expenseCreateData, int userId)
         {
-            var userExist = _context.user.SingleOrDefaultAsync(x => x.Id == userId);
+            var userExist = _context.User.SingleOrDefaultAsync(x => x.Id == userId);
             if (userExist != null)
                 throw new UserExists();
-            if (await _context.expenses.SingleOrDefaultAsync(x => x.Id == expenseCreateData.CategoryId) == null)
+            if (await _context.Expenses.SingleOrDefaultAsync(x => x.Id == expenseCreateData.CategoryId) == null)
                 throw new ExpenseNotFoudException();
-            if (_context.expenses.SingleOrDefaultAsync(x => x.Id == expenseCreateData.CategoryId).Id != userId)
+            if (_context.Expenses.SingleOrDefaultAsync(x => x.Id == expenseCreateData.CategoryId).Id != userId)
                 throw new ExpenseExistException();
-            var newExpense = new Expense
+            var newExpense = new Expenses
             {
                 Name = expenseCreateData.Name,
                 Summary = expenseCreateData.Summary,
@@ -72,7 +71,7 @@ namespace FinApp.Services
                 UserId = userId
             };
 
-            await _context.expenses.AddAsync(newExpense);
+            await _context.Expenses.AddAsync(newExpense);
             await _context.SaveChangesAsync();
 
             return newExpense.Id;
@@ -80,15 +79,15 @@ namespace FinApp.Services
 
         public async Task Update(ExpenseUpdateData expenseUpdateData, int userId)
         {
-            var expense1 = new Expense();
-            var expense = _context.expenses.SingleOrDefaultAsync(x => x.Id == expense1.Id);
+            var expense1 = new Expenses();
+            var expense = _context.Expenses.SingleOrDefaultAsync(x => x.Id == expense1.Id);
             if (expense == null)
                 throw new ExpenseExistException();
             if (userId != expense1.UserId)
                 throw new NoAccessException();
-            if (await _context.expenseCategories.SingleOrDefaultAsync(x => x.Id == expenseUpdateData.CategoryId) == null)
+            if (await _context.ExpenseCategories.SingleOrDefaultAsync(x => x.Id == expenseUpdateData.CategoryId) == null)
                 throw new ExpenseNotFoudException();
-            if (_context.expenseCategories.SingleOrDefault(x => x.Id == expenseUpdateData.CategoryId).UserId != userId)
+            if (_context.ExpenseCategories.SingleOrDefault(x => x.Id == expenseUpdateData.CategoryId).UserId != userId)
                 throw new NoAccessException();
 
 
@@ -98,19 +97,19 @@ namespace FinApp.Services
             expense1.UpdatedAt = DateTime.Now;
 
 
-            _context.expenses.Update(expense1);
+            _context.Expenses.Update(expense1);
             await _context.SaveChangesAsync();
         }
 
         public async Task Delete(int id)
         {
-            var expenseToDelete = await _context.expenses.SingleOrDefaultAsync(x => x.Id == id);
+            var expenseToDelete = await _context.Expenses.SingleOrDefaultAsync(x => x.Id == id);
             if (expenseToDelete == null)
             {
                 throw new ExpenseIsDeletedException();
             }
 
-            _context.expenses.Remove(expenseToDelete);
+            _context.Expenses.Remove(expenseToDelete);
             await _context.SaveChangesAsync();
         }
     }

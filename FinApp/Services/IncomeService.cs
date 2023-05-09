@@ -4,6 +4,7 @@ using FinApp.EnumValue;
 using FinApp.Exceptions;
 using FinApp.Interfaces;
 using FinApp.MiddleEntity;
+using FinApp.SearchContext;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinApp.Services
@@ -17,33 +18,31 @@ namespace FinApp.Services
             _context = context;
         }
 
-        public async Task<CollectionDto<Income>> GetAll(MoneyFS fS)
+        public async Task<CollectionDto<Incomes>> GetAll(MoneyFSSearchContext fS)
         {
             PaginationContext paginationContext = new PaginationContext { Page = fS.Page };
 
-            IQueryable<Income> query = _context.income;
+            IQueryable<Incomes> query = _context.Income;
             query = fS.Sort switch
             {
-                MoneyFlowSort.Name => query.OrderBy(x => x.Name),
-                MoneyFlowSort.Summary => query.OrderBy(x => x.Summary),
-                MoneyFlowSort.Category => query.OrderBy(x => x.SourceOfIncomeId),
+                null => query.OrderBy(x => x.Name),
                 _ => query.OrderBy((SortingDirection?)fS.Sort, propertyName: fS.Sort.GetDescription())
             };
 
             var income = await query.Where(x => x.UserId == fS.UserId && x.CreatedAt >= fS.MoneyFlow.From && x.CreatedAt <= fS.MoneyFlow.To).Skip(Convert.ToInt32(paginationContext.OffSet)).Take(paginationContext.PageSize).ToListAsync();
 
-            var response = new CollectionDto<Income>
+            var response = new CollectionDto<Incomes>
             {
                 Items = income,
-                Total = _context.income.Count()
+                Total = _context.Income.Count()
             };
 
             return response;
         }
 
-        public async Task<Income> Get(int id, int userId)
+        public async Task<Incomes> Get(int id, int userId)
         {
-            var income = await _context.income.SingleOrDefaultAsync(x => x.Id == id);
+            var income = await _context.Income.SingleOrDefaultAsync(x => x.Id == id);
 
             if (income == null)
                 throw new IncomeNotFoundException();
@@ -55,14 +54,14 @@ namespace FinApp.Services
 
         public async Task<int> Create(IncomeCreateData incomeCreateData, int userId)
         {
-            var userExist = _context.user.SingleOrDefaultAsync(x => x.Id == userId);
+            var userExist = _context.User.SingleOrDefaultAsync(x => x.Id == userId);
             if (userExist != null)
                 throw new UserExists();
-            if (await _context.sourcesOfIncome.SingleOrDefaultAsync(x => x.Id == incomeCreateData.CategoryId) == null)
+            if (await _context.SourcesOfIncome.SingleOrDefaultAsync(x => x.Id == incomeCreateData.CategoryId) == null)
                 throw new IncomeNotFoundException();
-            if (_context.sourcesOfIncome.SingleOrDefaultAsync(x => x.Id == incomeCreateData.CategoryId).Id != userId)
+            if (_context.SourcesOfIncome.SingleOrDefaultAsync(x => x.Id == incomeCreateData.CategoryId).Id != userId)
                 throw new IncomeSourceExistException();
-            var newIncome = new Income
+            var newIncome = new Incomes
             {
                 Name = incomeCreateData.Name,
                 Summary = incomeCreateData.Summary,
@@ -72,7 +71,7 @@ namespace FinApp.Services
                 UserId = userId
             };
 
-            await _context.income.AddAsync(newIncome);
+            await _context.Income.AddAsync(newIncome);
             await _context.SaveChangesAsync();
 
             return newIncome.Id;
@@ -80,15 +79,15 @@ namespace FinApp.Services
 
         public async Task Update(IncomeUpdateData incomeUpdateData, int userId)
         {
-            var income1 = new Income();
-            var income = _context.income.SingleOrDefaultAsync(x => x.Id == income1.Id);
+            var income1 = new Incomes();
+            var income = _context.Income.SingleOrDefaultAsync(x => x.Id == income1.Id);
             if (income == null)
                 throw new IncomeSourceExistException();
             if (userId != income1.UserId)
                 throw new NoAccessException();
-            if (await _context.sourcesOfIncome.SingleOrDefaultAsync(x => x.Id == incomeUpdateData.CategoryId) == null)
+            if (await _context.SourcesOfIncome.SingleOrDefaultAsync(x => x.Id == incomeUpdateData.CategoryId) == null)
                 throw new IncomeNotFoundException();
-            if (_context.sourcesOfIncome.SingleOrDefault(x => x.Id == incomeUpdateData.CategoryId).UserId != userId)
+            if (_context.SourcesOfIncome.SingleOrDefault(x => x.Id == incomeUpdateData.CategoryId).UserId != userId)
                 throw new NoAccessException();
 
 
@@ -98,19 +97,19 @@ namespace FinApp.Services
             income1.UpdatedAt = DateTime.Now;
 
 
-            _context.income.Update(income1);
+            _context.Income.Update(income1);
             await _context.SaveChangesAsync();
         }
 
         public async Task Delete(int id)
         {
-            var incomeToDelete = await _context.income.SingleOrDefaultAsync(x => x.Id == id);
+            var incomeToDelete = await _context.Income.SingleOrDefaultAsync(x => x.Id == id);
             if (incomeToDelete == null)
             {
                 throw new IncomeIsDeletedException();
             }
 
-            _context.income.Remove(incomeToDelete);
+            _context.Income.Remove(incomeToDelete);
             await _context.SaveChangesAsync();
         }
     }

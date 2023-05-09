@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FinApp.Controllers
 {
     [ApiController]
-    [Route("excelReport")]
+    [Route("excel-report")]
     public class ExcelReportController : BaseController
     {
         private readonly IExcelReportService _excelReportService;
@@ -23,12 +23,12 @@ namespace FinApp.Controllers
         /// <returns>Excel report for period of time input/ </returns>
         [Authorize(Roles = "Administrator,User")]
         [HttpPost]
-        public async Task<IActionResult> GetExcelReport([FromQuery] MoneyFlow moneyFlow)
+        public async Task<IActionResult> Get([FromQuery] MoneyFlowSearchContext moneyFlow)
         {
             var userId = GetUserId();
-            var wb = await _excelReportService.GetReport(userId, moneyFlow);
+            var report = await _excelReportService.GetReport(userId, moneyFlow);
 
-            return Ok(wb);
+            return Ok(report);
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace FinApp.Controllers
         /// <param name="report">Excel report file with changes.</param>
         [Authorize(Roles = "Administrator,User")]
         [HttpPut]
-        public async Task<ActionResult> SetChangesFromExcel(IFormFile report)
+        public async Task<ActionResult> SetChanges(IFormFile report)
         {
             var userId = GetUserId();
             await _excelReportService.SetChangesFromExcel(userId, report);
