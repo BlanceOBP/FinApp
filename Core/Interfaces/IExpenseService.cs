@@ -1,5 +1,4 @@
 ﻿using FinApp.Entity;
-using FinApp.EnumValue;
 using FinApp.MiddleEntity;
 using FinApp.SearchContext;
 
@@ -30,7 +29,7 @@ namespace FinApp.Interfaces
         /// <param name="id">ID of the desired expense.</param>
         /// <param name="userId">Current user ID.</param>
         /// <returns>Expense with the specified ID.</returns>
-        Task<Expenses> Get(int id, int userId);
+        Task<Expense> Get(int id, int userId);
 
         /// <summary>
         /// Get all expenses for the specified period.
@@ -40,7 +39,7 @@ namespace FinApp.Interfaces
         /// <param name="userId">Current user ID.</param>
         /// <param name="moneyFlow">Specified period of time.</param>
         /// <returns>List of expenses.</returns>
-        Task<CollectionDto<Expenses>> GetAll(MoneyFSSearchContext fS);
+        Task<CollectionDto<Expense>> GetAll(MoneyFSSearchContext fS);
 
         /// <summary>
         /// Updates expense data.

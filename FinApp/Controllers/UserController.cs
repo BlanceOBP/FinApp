@@ -32,7 +32,7 @@ namespace FinApp.Controllers
         [ProducesResponseType(403)]
         [HttpGet]
         [Authorize(Roles = "Administrator")]
-        [Route("GetAll")]
+        [Route("list")]
         public async Task<IActionResult> GetAll(UserFlowSearchContext userFlow)
         {
             var users = await userService.GetAll(userFlow);
@@ -55,7 +55,7 @@ namespace FinApp.Controllers
         [ProducesResponseType(403)]
         [HttpGet]
         [Authorize(Roles = "Administrator")]
-        [Route("Get")]
+        [Route("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             var user = await userService.Get(id);
@@ -72,7 +72,7 @@ namespace FinApp.Controllers
         [ProducesResponseType(204)]
         [HttpPost]
         [Authorize(Roles = "Administrator,User")]
-        [Route("Create")]
+        [Route("create")]
         public async Task<IActionResult> Create([FromBody]UserCreateData userCreateData)
         {
             var id = GetUserId();
@@ -95,7 +95,7 @@ namespace FinApp.Controllers
         [ProducesResponseType(401)]
         [Authorize(Roles = "Administrator,User")]
         [HttpPut]
-        [Route("Update")]
+        [Route("{id}")]
         public async Task<IActionResult> Update([FromBody]UserUpdateData userUpdateData)
         {
             var id = GetUserId();
@@ -120,7 +120,7 @@ namespace FinApp.Controllers
         [ProducesResponseType(403)]
         [HttpDelete]
         [Authorize(Roles = "Administrator")]
-        [Route("Delete")]
+        [Route("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             await userService.Delete(id);

@@ -1,5 +1,4 @@
-﻿using FinApp.EnumValue;
-using FinApp.Interfaces;
+﻿using FinApp.Interfaces;
 using FinApp.MiddleEntity;
 using FinApp.SearchContext;
 using Microsoft.AspNetCore.Authorization;
@@ -30,7 +29,7 @@ namespace FinApp.Controllers
         [ProducesResponseType(403)]
         [HttpGet]
         [Authorize(Roles = "Administrator")]
-        [Route("get-all")]
+        [Route("list")]
         public async Task<IActionResult> GetList(CategotiesFlowSearchContext categotiesFlow)
         {
             categotiesFlow.UserId = GetUserId();
@@ -54,7 +53,7 @@ namespace FinApp.Controllers
         [ProducesResponseType(403)]
         [HttpGet]
         [Authorize(Roles = "Administrator")]
-        [Route("get")]
+        [Route("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             var userId = GetUserId();
@@ -95,7 +94,7 @@ namespace FinApp.Controllers
         [ProducesResponseType(401)]
         [Authorize(Roles = "Administrator,User")]
         [HttpPut]
-        [Route("update")]
+        [Route("{id}")]
         public async Task<IActionResult> Update([FromBody] ExpenseUpdateData expenseUpdateData)
         {
             var userId = GetUserId();
@@ -120,7 +119,7 @@ namespace FinApp.Controllers
         [ProducesResponseType(403)]
         [HttpDelete]
         [Authorize(Roles = "Administrator")]
-        [Route("delete")]
+        [Route("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             await expenseCategoryService.Delete(id);

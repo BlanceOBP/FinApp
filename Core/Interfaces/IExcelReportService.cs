@@ -1,5 +1,6 @@
 ﻿using ClosedXML.Excel;
-using FinApp.MiddleEntity;
+using FinApp.SearchContext;
+using Microsoft.AspNetCore.Http;
 
 namespace FinApp.Interfaces
 {

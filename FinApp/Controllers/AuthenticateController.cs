@@ -1,12 +1,7 @@
-﻿using FinApp.DataBase;
-using FinApp.Entity;
+﻿using FinApp.Entity;
 using FinApp.Exceptions;
 using FinApp.Interface;
-using FinApp.Token;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 
 namespace FinApp.Controllers
 {
@@ -29,7 +24,7 @@ namespace FinApp.Controllers
         /// <exception cref="LoginException">Incorrect data</exception>
         /// <response code="200">User successfully logged in</response>
         /// <response code="400">Incorrect data</response>
-        [Route("authorize")]
+        [Route("login")]
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]

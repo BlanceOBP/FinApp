@@ -18,11 +18,11 @@ namespace FinApp.Services
             _context = context;
         }
 
-        public async Task<CollectionDto<Expenses>> GetAll(MoneyFSSearchContext fS)
+        public async Task<CollectionDto<Expense>> GetAll(MoneyFSSearchContext fS)
         {
             PaginationContext paginationContext = new PaginationContext { Page = fS.Page };
 
-            IQueryable<Expenses> query = _context.Expenses;
+            IQueryable<Expense> query = _context.Expenses;
             query = fS.Sort switch
             {
                 null => query.OrderBy(x => x.Name),
@@ -31,7 +31,7 @@ namespace FinApp.Services
 
             var expense = await query.Where(x => x.UserId == fS.UserId && x.CreatedAt >= fS.MoneyFlow.From && x.CreatedAt <= fS.MoneyFlow.To).Skip(Convert.ToInt32(paginationContext.OffSet)).Take(paginationContext.PageSize).ToListAsync();
 
-            var response = new CollectionDto<Expenses>
+            var response = new CollectionDto<Expense>
             {
                 Items = expense,
                 Total = _context.Expenses.Count()
@@ -40,7 +40,7 @@ namespace FinApp.Services
             return response;
         }
 
-        public async Task<Expenses> Get(int id, int userId)
+        public async Task<Expense> Get(int id, int userId)
         {
             var expense = await _context.Expenses.SingleOrDefaultAsync(x => x.Id == id);
 
@@ -54,14 +54,14 @@ namespace FinApp.Services
 
         public async Task<int> Create(ExpenseCreateData expenseCreateData, int userId)
         {
-            var userExist = _context.User.SingleOrDefaultAsync(x => x.Id == userId);
+            var userExist = _context.Users.SingleOrDefaultAsync(x => x.Id == userId);
             if (userExist != null)
                 throw new UserExists();
             if (await _context.Expenses.SingleOrDefaultAsync(x => x.Id == expenseCreateData.CategoryId) == null)
                 throw new ExpenseNotFoudException();
             if (_context.Expenses.SingleOrDefaultAsync(x => x.Id == expenseCreateData.CategoryId).Id != userId)
                 throw new ExpenseExistException();
-            var newExpense = new Expenses
+            var newExpense = new Expense
             {
                 Name = expenseCreateData.Name,
                 Summary = expenseCreateData.Summary,
@@ -79,7 +79,7 @@ namespace FinApp.Services
 
         public async Task Update(ExpenseUpdateData expenseUpdateData, int userId)
         {
-            var expense1 = new Expenses();
+            var expense1 = new Expense();
             var expense = _context.Expenses.SingleOrDefaultAsync(x => x.Id == expense1.Id);
             if (expense == null)
                 throw new ExpenseExistException();

@@ -22,7 +22,7 @@ namespace FinApp.Services
 
         public JwtSecurityToken Authorization([FromBody] LoginData user)
         {
-            if (_context.User.AnyAsync(x => x.Email == user.Email && x.Password == user.Password) != null)
+            if (_context.Users.AnyAsync(x => x.Email == user.Email && x.Password == user.Password) != null)
             {
                 throw new LoginException();
             }
@@ -37,7 +37,7 @@ namespace FinApp.Services
 
         public async Task Registration([FromBody] RegistrationData user)
         {
-            if (_context.User.AnyAsync(x => x.Login == user.Login
+            if (_context.Users.AnyAsync(x => x.Login == user.Login
                                            || x.Email == user.Email) != null)
             {
                 throw new InputLoginException();
@@ -45,7 +45,7 @@ namespace FinApp.Services
 
             var dateOfCreate = DateTime.Today;
             var DateOfEdit = DateTime.Today;
-            var NewUser = new Users
+            var NewUser = new User
             {
                 Name = user.Name,
                 LastName = user.LastName,
@@ -58,7 +58,7 @@ namespace FinApp.Services
                 CreateOfEdit = DateOfEdit
             };
 
-            _context.User.Add(NewUser);
+            _context.Users.Add(NewUser);
             await _context.SaveChangesAsync();
         }
 

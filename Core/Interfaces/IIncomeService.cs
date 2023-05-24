@@ -1,5 +1,4 @@
 ﻿using FinApp.Entity;
-using FinApp.EnumValue;
 using FinApp.MiddleEntity;
 using FinApp.SearchContext;
 
@@ -30,7 +29,7 @@ namespace FinApp.Interfaces
         /// <param name="id">ID of the desired income.</param>
         /// <param name="userId">Current user ID.</param>
         /// <returns>Get income.</returns>
-        Task<Incomes> Get(int id, int userId);
+        Task<Income> Get(int id, int userId);
 
         /// <summary>
         /// Get all income for the specified period.
@@ -40,7 +39,7 @@ namespace FinApp.Interfaces
         /// <param name="userId">Current user ID.</param>
         /// <param name="moneyFlow">Specified period of time.</param>
         /// <returns>Get all income.</returns>
-        Task<CollectionDto<Incomes>> GetAll(MoneyFSSearchContext fS);
+        Task<CollectionDto<Income>> GetAll(MoneyFSSearchContext fS);
 
         /// <summary>
         /// Updates income data.

@@ -1,7 +1,8 @@
 ﻿using ClosedXML.Excel;
 using FinApp.DataBase;
 using FinApp.Interfaces;
-using FinApp.MiddleEntity;
+using FinApp.SearchContext;
+using Microsoft.AspNetCore.Http;
 
 namespace FinApp.Services
 {
@@ -22,7 +23,7 @@ namespace FinApp.Services
 
             var incomeSheet = wb.AddWorksheet("Income").SetFirstCell($"Income from {moneyFlow.From} to {moneyFlow.To}")
             .AddRow();
-            var incomeList = _context.Income.Where(x => x.UserId == userId && x.CreatedAt >= moneyFlow.From && x.CreatedAt <= moneyFlow.To).OrderBy(x => x.Id).Select(x => new { x.Id, x.Name, x.Summary, x.CreatedAt });
+            var incomeList = _context.Incomes.Where(x => x.UserId == userId && x.CreatedAt >= moneyFlow.From && x.CreatedAt <= moneyFlow.To).OrderBy(x => x.Id).Select(x => new { x.Id, x.Name, x.Summary, x.CreatedAt });
             incomeSheet.Column(1).Width = 20;
             incomeSheet.Columns().AdjustToContents(2, incomeList.Count() + 2);
 
@@ -83,7 +84,7 @@ namespace FinApp.Services
                 var amount = Convert.ToSingle(incomeSheet.Cell($"C{incomeRowNumber}").GetString());
                 var date = incomeSheet.Cell($"D{incomeRowNumber}").GetDateTime();
 
-                var incomeRecordNow = _context.Income.SingleOrDefault(x => x.Id == id);
+                var incomeRecordNow = _context.Incomes.SingleOrDefault(x => x.Id == id);
                 if (incomeRecordNow.UserId == userId)
                 {
                     incomeRecordNow.Name = name;

@@ -7,7 +7,7 @@ namespace FinApp.Entity
     /// <summary>
     /// Represents the user.
     /// </summary>
-    public class Users
+    public class User
     {
         [Key]
         public int Id { get; set; }

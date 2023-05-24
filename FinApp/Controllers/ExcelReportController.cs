@@ -1,5 +1,5 @@
 ﻿using FinApp.Interfaces;
-using FinApp.MiddleEntity;
+using FinApp.SearchContext;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

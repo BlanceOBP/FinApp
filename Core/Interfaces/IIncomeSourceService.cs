@@ -1,5 +1,4 @@
 ﻿using FinApp.Entity;
-using FinApp.EnumValue;
 using FinApp.MiddleEntity;
 using FinApp.SearchContext;
 
@@ -30,14 +29,14 @@ namespace FinApp.Interfaces
         /// <param name="id">Desired income source ID.</param>
         /// <param name="userId">Current user ID.</param>
         /// <returns>Get income source category by ID.</returns>
-        Task<SourceOfIncomes> Get(int id, int userId);
+        Task<SourceOfIncome> Get(int id, int userId);
 
         /// <summary>
         /// Get all income source categories.
         /// </summary>
         /// <param name="sort">Order sorting, current user ID and users list page .</param>
         /// <returns>Get all income source category.</returns>
-        Task<CollectionDto<SourceOfIncomes>> GetAll(CategotiesFlowSearchContext sort);
+        Task<CollectionDto<SourceOfIncome>> GetAll(CategotiesFlowSearchContext sort);
 
         /// <summary>
         /// Updates income source category data.
