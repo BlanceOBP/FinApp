@@ -3,7 +3,7 @@ using FinApp.SearchContext;
 
 namespace FinApp.SearchContext
 {
-    public class MoneyFSSearchContext
+    public class MoneySearchContext
     {
         public int UserId { get; set; }
 

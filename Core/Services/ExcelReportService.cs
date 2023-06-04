@@ -1,4 +1,5 @@
 ﻿using ClosedXML.Excel;
+using Core.Extensions;
 using FinApp.DataBase;
 using FinApp.Interfaces;
 using FinApp.SearchContext;

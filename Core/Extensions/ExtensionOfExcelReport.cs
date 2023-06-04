@@ -1,6 +1,6 @@
 ﻿using ClosedXML.Excel;
 
-namespace FinApp
+namespace Core.Extensions
 {
     public static class ExtensionOfExcelReport
     {

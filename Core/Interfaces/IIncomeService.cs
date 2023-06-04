@@ -39,7 +39,7 @@ namespace FinApp.Interfaces
         /// <param name="userId">Current user ID.</param>
         /// <param name="moneyFlow">Specified period of time.</param>
         /// <returns>Get all income.</returns>
-        Task<CollectionDto<Income>> GetAll(MoneyFSSearchContext fS);
+        Task<CollectionDto<Income>> GetAll(MoneySearchContext fS);
 
         /// <summary>
         /// Updates income data.

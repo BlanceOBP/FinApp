@@ -1,4 +1,5 @@
-﻿using FinApp.Interfaces;
+﻿using FinApp.Controllers.Abstractions;
+using FinApp.Interfaces;
 using FinApp.SearchContext;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +23,7 @@ namespace FinApp.Controllers
         /// <param name="moneyFlow">Period or time input.</param>
         /// <returns>Excel report for period of time input/ </returns>
         [Authorize(Roles = "Administrator,User")]
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> Get([FromQuery] MoneyFlowSearchContext moneyFlow)
         {
             var userId = GetUserId();

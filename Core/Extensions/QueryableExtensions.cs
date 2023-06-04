@@ -2,7 +2,7 @@
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using System.Linq.Expressions;
 
-namespace FinApp
+namespace Core.Extensions
 {
     public static class QueryableExtensions
     {
@@ -16,7 +16,7 @@ namespace FinApp
         /// <returns>Отсортированный набор элементов в виде <see cref="IOrderedQueryable{T}"/></returns>
         public static IOrderedQueryable<TSource> OrderBy<TSource>(this IQueryable<TSource> source, SortingDirection? order, string propertyName)
         {
-            return (order == SortingDirection.Desc)
+            return order == SortingDirection.Desc
                 ? source.CallOrderedQueryable("OrderByDescending", propertyName)
                 : source.CallOrderedQueryable("OrderBy", propertyName);
         }

@@ -4,11 +4,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using FinApp.EnumValue;
 using FinApp.SearchContext;
+using FinApp.Controllers.Abstractions;
 
-namespace FinApp.Controllers
+namespace FinApp.Controllers.Admin
 {
     [ApiController]
-    [Route("api/users")]
+    [Route("api/admin")]
     public class UserController : BaseController
     {
         private readonly IUserService userService;
@@ -32,7 +33,7 @@ namespace FinApp.Controllers
         [ProducesResponseType(403)]
         [HttpGet]
         [Authorize(Roles = "Administrator")]
-        [Route("list")]
+        [Route("get")]
         public async Task<IActionResult> GetAll(UserFlowSearchContext userFlow)
         {
             var users = await userService.GetAll(userFlow);
@@ -73,12 +74,12 @@ namespace FinApp.Controllers
         [HttpPost]
         [Authorize(Roles = "Administrator,User")]
         [Route("create")]
-        public async Task<IActionResult> Create([FromBody]UserCreateData userCreateData)
+        public async Task<IActionResult> Create([FromBody] UserCreateData userCreateData)
         {
             var id = GetUserId();
-            var userId = await  userService.Create(userCreateData,id);
+            var userId = await userService.Create(userCreateData, id);
 
-            return CreatedAtAction(nameof(Create),userId);
+            return CreatedAtAction(nameof(Create), userId);
         }
 
         /// <summary>
@@ -96,10 +97,10 @@ namespace FinApp.Controllers
         [Authorize(Roles = "Administrator,User")]
         [HttpPut]
         [Route("{id}")]
-        public async Task<IActionResult> Update([FromBody]UserUpdateData userUpdateData)
+        public async Task<IActionResult> Update([FromBody] UserUpdateData userUpdateData)
         {
             var id = GetUserId();
-            await userService.Update(userUpdateData,id);
+            await userService.Update(userUpdateData, id);
 
             return NoContent();
         }

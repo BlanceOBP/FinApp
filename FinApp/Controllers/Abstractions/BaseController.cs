@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-namespace FinApp.Controllers
+namespace FinApp.Controllers.Abstractions
 {
     /// <summary>
     /// GetUserId

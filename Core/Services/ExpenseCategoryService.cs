@@ -1,4 +1,5 @@
-﻿using FinApp.DataBase;
+﻿using Core.Extensions;
+using FinApp.DataBase;
 using FinApp.Entity;
 using FinApp.EnumValue;
 using FinApp.Exceptions;

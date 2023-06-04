@@ -6,6 +6,7 @@ using FinApp.Interface;
 using Microsoft.EntityFrameworkCore;
 using FinApp.EnumValue;
 using FinApp.SearchContext;
+using Core.Extensions;
 
 namespace FinApp.Services
 {

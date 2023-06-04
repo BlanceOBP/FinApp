@@ -1,4 +1,5 @@
-﻿using FinApp.EnumValue;
+﻿using FinApp.Controllers.Abstractions;
+using FinApp.EnumValue;
 using FinApp.Interfaces;
 using FinApp.MiddleEntity;
 using FinApp.SearchContext;
@@ -32,7 +33,7 @@ namespace FinApp.Controllers
         [ProducesResponseType(403)]
         [HttpGet]
         [Authorize(Roles = "Administrator")]
-        [Route("list")]
+        [Route("get")]
         public async Task<IActionResult> GetList(CategotiesFlowSearchContext categotiesFlow)
         {
             categotiesFlow.UserId = GetUserId();

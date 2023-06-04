@@ -20,7 +20,7 @@ namespace FinApp.Services
             _context = context;
         }
 
-        public JwtSecurityToken Authorization([FromBody] LoginData user)
+        public JwtSecurityToken Authorization(LoginData user)
         {
             if (_context.Users.AnyAsync(x => x.Email == user.Email && x.Password == user.Password) != null)
             {
@@ -35,7 +35,7 @@ namespace FinApp.Services
             return jwt;
         }
 
-        public async Task Registration([FromBody] RegistrationData user)
+        public async Task Registration(RegistrationData user)
         {
             if (_context.Users.AnyAsync(x => x.Login == user.Login
                                            || x.Email == user.Email) != null)

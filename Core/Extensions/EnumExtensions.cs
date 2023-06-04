@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
 
-namespace FinApp
+namespace Core.Extensions
 {
-    public static class Helper
+    public static class EnumExtensions
     {
         public static string GetDescription(this Enum value)
         {

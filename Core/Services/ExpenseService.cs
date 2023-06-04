@@ -1,4 +1,5 @@
-﻿using FinApp.DataBase;
+﻿using Core.Extensions;
+using FinApp.DataBase;
 using FinApp.Entity;
 using FinApp.EnumValue;
 using FinApp.Exceptions;
@@ -18,18 +19,18 @@ namespace FinApp.Services
             _context = context;
         }
 
-        public async Task<CollectionDto<Expense>> GetAll(MoneyFSSearchContext fS)
+        public async Task<CollectionDto<Expense>> GetAll(MoneySearchContext searchContext)
         {
-            PaginationContext paginationContext = new PaginationContext { Page = fS.Page };
+            PaginationContext paginationContext = new PaginationContext { Page = searchContext.Page };
 
             IQueryable<Expense> query = _context.Expenses;
-            query = fS.Sort switch
+            query = searchContext.Sort switch
             {
                 null => query.OrderBy(x => x.Name),
-                _ => query.OrderBy((SortingDirection?)fS.Sort, propertyName: fS.Sort.GetDescription())
+                _ => query.OrderBy((SortingDirection?)searchContext.Sort, propertyName: searchContext.Sort.GetDescription())
             };
 
-            var expense = await query.Where(x => x.UserId == fS.UserId && x.CreatedAt >= fS.MoneyFlow.From && x.CreatedAt <= fS.MoneyFlow.To).Skip(Convert.ToInt32(paginationContext.OffSet)).Take(paginationContext.PageSize).ToListAsync();
+            var expense = await query.Where(x => x.UserId == searchContext.UserId && x.CreatedAt >= searchContext.MoneyFlow.From && x.CreatedAt <= searchContext.MoneyFlow.To).Skip(Convert.ToInt32(paginationContext.OffSet)).Take(paginationContext.PageSize).ToListAsync();
 
             var response = new CollectionDto<Expense>
             {

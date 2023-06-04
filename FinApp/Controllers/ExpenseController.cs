@@ -1,4 +1,5 @@
-﻿using FinApp.Interfaces;
+﻿using FinApp.Controllers.Abstractions;
+using FinApp.Interfaces;
 using FinApp.MiddleEntity;
 using FinApp.SearchContext;
 using Microsoft.AspNetCore.Authorization;
@@ -31,8 +32,8 @@ namespace FinApp.Controllers
         [ProducesResponseType(403)]
         [HttpGet]
         [Authorize(Roles = "Administrator")]
-        [Route("list")]
-        public async Task<IActionResult> GetList(MoneyFSSearchContext moneyFS)
+        [Route("get")]
+        public async Task<IActionResult> GetList(MoneySearchContext moneyFS)
         {
             moneyFS.UserId = GetUserId();
             var expense = await expenseService.GetAll(moneyFS);
