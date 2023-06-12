@@ -15,8 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\FinApp.Entities\FinApp.Entities.csproj" />
-    <ProjectReference Include="..\src\FinApp.Infrastructure\FinApp.Infrastructure.csproj" />
+    <ProjectReference Include="..\FinApp.Entities\FinApp.Entities.csproj" />
+    <ProjectReference Include="..\FinApp.Infrastructure\FinApp.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
