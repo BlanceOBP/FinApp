@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FinApp.Entity
+namespace FinApp.Core.Models
 {
     /// <summary>
     /// Represents the register information.

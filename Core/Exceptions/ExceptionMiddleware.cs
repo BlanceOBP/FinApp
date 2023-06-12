@@ -1,11 +1,7 @@
-﻿using System;
-using System.Net;
-using System.Threading.Tasks;
+﻿using System.Net;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Hosting;
-using FinApp.Exeptions;
 
-namespace FinApp.Exceptions
+namespace FinApp.Core.Exceptions
 {
     public class ExceptionMiddleware
     {
@@ -47,8 +43,8 @@ namespace FinApp.Exceptions
             }
 
             context.Response.ContentType = "text/plain";
-                context.Response.StatusCode = (int)code;
-                return context.Response.WriteAsync(result);
+            context.Response.StatusCode = (int)code;
+            return context.Response.WriteAsync(result);
         }
 
     }

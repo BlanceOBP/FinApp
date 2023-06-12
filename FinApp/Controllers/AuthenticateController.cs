@@ -1,9 +1,9 @@
-﻿using FinApp.Entity;
-using FinApp.Exceptions;
-using FinApp.Interface;
+﻿using FinApp.Core.Exceptions;
+using FinApp.Core.Interfaces;
+using FinApp.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FinApp.Controllers
+namespace FinApp.Api.Controllers
 {
     [ApiController]
     [Route("api/auth")]
@@ -11,12 +11,12 @@ namespace FinApp.Controllers
     {
         private readonly IAuthService _authService;
 
-        public AuthenticateController( IAuthService authService)
+        public AuthenticateController(IAuthService authService)
         {
             _authService = authService;
         }
 
-    
+
         /// <summary>
         /// </summary>
         /// <param name="user">Password and email of the user</param>
@@ -28,7 +28,7 @@ namespace FinApp.Controllers
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> Authorize([FromBody]LoginData user)
+        public async Task<IActionResult> Authorize([FromBody] LoginData user)
         {
             var token = _authService.Authorization(user);
 
@@ -46,7 +46,7 @@ namespace FinApp.Controllers
         [HttpPost]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> Register([FromBody]RegistrationData user)
+        public async Task<IActionResult> Register([FromBody] RegistrationData user)
         {
             await _authService.Registration(user);
 

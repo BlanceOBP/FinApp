@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace FinApp.EnumValue
+namespace FinApp.Core.Enums
 {
     public enum UserSort
     {

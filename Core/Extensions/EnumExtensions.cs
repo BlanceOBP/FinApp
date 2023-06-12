@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Core.Extensions
+namespace FinApp.Core.Extensions
 {
     public static class EnumExtensions
     {

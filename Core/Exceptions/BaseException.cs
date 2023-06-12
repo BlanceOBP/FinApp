@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace FinApp.Exeptions
+namespace FinApp.Core.Exceptions
 {
     public class BaseException : Exception
     {

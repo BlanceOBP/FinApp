@@ -1,12 +1,12 @@
-﻿using FinApp.DataBase;
-using FinApp.Entity;
-using FinApp.Exceptions;
-using FinApp.MiddleEntity;
-using FinApp.Interface;
-using Microsoft.EntityFrameworkCore;
-using FinApp.EnumValue;
-using FinApp.SearchContext;
-using Core.Extensions;
+﻿using Microsoft.EntityFrameworkCore;
+using FinApp.Core.Enums;
+using FinApp.Core.Extensions;
+using FinApp.Core.Interfaces;
+using FinApp.Core.Models;
+using FinApp.Core.Exceptions;
+using FinApp.Core.SearchContext;
+using FinApp.Entities;
+using FinApp.Infrastructure;
 
 namespace FinApp.Services
 {
@@ -20,7 +20,7 @@ namespace FinApp.Services
             _context = context;
         }
 
-        public async Task<CollectionDto<User>> GetAll(UserFlowSearchContext sort)
+        public async Task<CollectionDto<User>> GetList(UserFlowSearchContext sort)
         {
             PaginationContext paginationContext = new PaginationContext { Page = sort.Page,};
           

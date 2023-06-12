@@ -1,7 +1,6 @@
-﻿using FinApp.Exeptions;
-using System.Net;
+﻿using System.Net;
 
-namespace FinApp.Exceptions
+namespace FinApp.Core.Exceptions
 {
     public class ExpenseIsDeletedException : BaseException
     {

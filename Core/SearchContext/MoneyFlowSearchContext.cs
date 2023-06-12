@@ -1,4 +1,4 @@
-﻿namespace FinApp.SearchContext
+﻿namespace FinApp.Core.SearchContext
 {
     /// <summary>
     /// Represents the middleware search money flow for income.

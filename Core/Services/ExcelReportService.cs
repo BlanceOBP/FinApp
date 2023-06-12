@@ -1,8 +1,8 @@
 ﻿using ClosedXML.Excel;
-using Core.Extensions;
-using FinApp.DataBase;
-using FinApp.Interfaces;
-using FinApp.SearchContext;
+using FinApp.Core.Extensions;
+using FinApp.Core.Interfaces;
+using FinApp.Core.SearchContext;
+using FinApp.Infrastructure;
 using Microsoft.AspNetCore.Http;
 
 namespace FinApp.Services

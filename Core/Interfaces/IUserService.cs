@@ -1,8 +1,8 @@
-﻿using FinApp.Entity;
-using FinApp.MiddleEntity;
-using FinApp.SearchContext;
+﻿using FinApp.Core.Models;
+using FinApp.Core.SearchContext;
+using FinApp.Entities;
 
-namespace FinApp.Interface
+namespace FinApp.Core.Interfaces
 {
     /// <summary>
     /// Defines methods associated with users.
@@ -20,7 +20,7 @@ namespace FinApp.Interface
         /// <param name="sort">Users list page and order sorting.</param>
         /// </summary>
         /// <returns>Get all users.</returns>
-        Task<CollectionDto<User>> GetAll(UserFlowSearchContext sort);
+        Task<CollectionDto<User>> GetList(UserFlowSearchContext sort);
 
         /// <summary>
         /// Get user by ID.

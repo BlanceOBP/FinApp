@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FinApp.SearchContext
+namespace FinApp.Core.SearchContext
 {
     public class PaginationContext
     {

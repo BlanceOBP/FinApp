@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-namespace FinApp.Entity
+namespace FinApp.Entities
 {
     /// <summary>
     /// Represents the user.

@@ -1,8 +1,8 @@
-﻿using FinApp.EnumValue;
+﻿using FinApp.Core.Enums;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using System.Linq.Expressions;
 
-namespace Core.Extensions
+namespace FinApp.Core.Extensions
 {
     public static class QueryableExtensions
     {

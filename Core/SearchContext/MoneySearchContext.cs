@@ -1,7 +1,6 @@
-﻿using FinApp.EnumValue;
-using FinApp.SearchContext;
+﻿using FinApp.Core.Enums;
 
-namespace FinApp.SearchContext
+namespace FinApp.Core.SearchContext
 {
     public class MoneySearchContext
     {

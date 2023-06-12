@@ -1,8 +1,8 @@
 ﻿using ClosedXML.Excel;
-using FinApp.SearchContext;
+using FinApp.Core.SearchContext;
 using Microsoft.AspNetCore.Http;
 
-namespace FinApp.Interfaces
+namespace FinApp.Core.Interfaces
 {
     public interface IExcelReportService
     {

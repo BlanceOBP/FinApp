@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FinApp.MiddleEntity
+namespace FinApp.Core.Models
 {
     /// <summary>
     /// Represents the middleware update user.

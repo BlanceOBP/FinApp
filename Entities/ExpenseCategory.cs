@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FinApp.Entity
+namespace FinApp.Entities
 {
     /// <summary>
     /// Represents the expense category.

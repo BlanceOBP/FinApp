@@ -1,10 +1,9 @@
-﻿using FinApp.MiddleEntity;
-using FinApp.Interface;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using FinApp.EnumValue;
-using FinApp.SearchContext;
-using FinApp.Controllers.Abstractions;
+using FinApp.Api.Controllers.Abstractions;
+using FinApp.Core.Interfaces;
+using FinApp.Core.Models;
+using FinApp.Core.SearchContext;
 
 namespace FinApp.Controllers.Admin
 {
@@ -33,10 +32,9 @@ namespace FinApp.Controllers.Admin
         [ProducesResponseType(403)]
         [HttpGet]
         [Authorize(Roles = "Administrator")]
-        [Route("get")]
-        public async Task<IActionResult> GetAll(UserFlowSearchContext userFlow)
+        public async Task<IActionResult> GetList(UserFlowSearchContext userFlow)
         {
-            var users = await userService.GetAll(userFlow);
+            var users = await userService.GetList(userFlow);
 
             return Ok(users);
         }

@@ -1,4 +1,4 @@
-﻿namespace FinApp.MiddleEntity
+﻿namespace FinApp.Core.Models
 {
     /// <summary>
     /// Represents the middleware create expense.

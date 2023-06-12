@@ -1,7 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace FinApp.Token
+namespace FinApp.Core.Options
 {
     /// <summary>
     /// Jwt token

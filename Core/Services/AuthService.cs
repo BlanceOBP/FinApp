@@ -1,9 +1,9 @@
-﻿using FinApp.DataBase;
-using FinApp.Entity;
-using FinApp.Exceptions;
-using FinApp.Interface;
-using FinApp.Token;
-using Microsoft.AspNetCore.Mvc;
+﻿using FinApp.Core.Exceptions;
+using FinApp.Core.Interfaces;
+using FinApp.Core.Models;
+using FinApp.Core.Options;
+using FinApp.Entities;
+using FinApp.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;

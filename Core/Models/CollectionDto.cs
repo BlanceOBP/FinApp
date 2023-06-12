@@ -1,4 +1,4 @@
-﻿namespace FinApp.MiddleEntity
+﻿namespace FinApp.Core.Models
 {
     public class CollectionDto<T>
     {

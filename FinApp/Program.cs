@@ -1,5 +1,5 @@
-using FinApp.DataBase;
-using FinApp.Token;
+using FinApp.Core.Options;
+using FinApp.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;

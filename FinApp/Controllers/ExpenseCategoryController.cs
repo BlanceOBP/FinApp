@@ -1,11 +1,11 @@
-﻿using FinApp.Controllers.Abstractions;
-using FinApp.Interfaces;
-using FinApp.MiddleEntity;
-using FinApp.SearchContext;
+﻿using FinApp.Api.Controllers.Abstractions;
+using FinApp.Core.Interfaces;
+using FinApp.Core.Models;
+using FinApp.Core.SearchContext;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FinApp.Controllers
+namespace FinApp.Api.Controllers
 {
     [ApiController]
     [Route("api/expenseCategory")]
@@ -30,7 +30,6 @@ namespace FinApp.Controllers
         [ProducesResponseType(403)]
         [HttpGet]
         [Authorize(Roles = "Administrator")]
-        [Route("list")]
         public async Task<IActionResult> GetList(CategotiesFlowSearchContext categotiesFlow)
         {
             categotiesFlow.UserId = GetUserId();

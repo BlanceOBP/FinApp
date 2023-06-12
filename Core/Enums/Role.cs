@@ -1,4 +1,4 @@
-﻿namespace FinApp.MiddleEntity
+﻿namespace FinApp.Core.Enums
 {
     /// <summary>
     /// Roles of Users

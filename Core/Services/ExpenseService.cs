@@ -1,11 +1,11 @@
-﻿using Core.Extensions;
-using FinApp.DataBase;
-using FinApp.Entity;
-using FinApp.EnumValue;
-using FinApp.Exceptions;
-using FinApp.Interfaces;
-using FinApp.MiddleEntity;
-using FinApp.SearchContext;
+﻿using FinApp.Core.Enums;
+using FinApp.Core.Exceptions;
+using FinApp.Core.Extensions;
+using FinApp.Core.Interfaces;
+using FinApp.Core.Models;
+using FinApp.Core.SearchContext;
+using FinApp.Entities;
+using FinApp.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinApp.Services

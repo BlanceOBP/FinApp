@@ -1,4 +1,6 @@
-﻿namespace FinApp.MiddleEntity
+﻿using FinApp.Core.Models;
+
+namespace FinApp.Core.Models
 {
     /// <summary>
     /// Represents the middleware create income.

@@ -1,8 +1,7 @@
-﻿using FinApp.Entity;
+﻿using FinApp.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 
-namespace FinApp.DataBase
+namespace FinApp.Infrastructure
 {
     /// <summary>
     /// Database context class

@@ -1,6 +1,6 @@
-﻿using FinApp.EnumValue;
+﻿using FinApp.Core.Enums;
 
-namespace FinApp.SearchContext
+namespace FinApp.Core.SearchContext
 {
     public class CategotiesFlowSearchContext
     {

@@ -1,7 +1,7 @@
-﻿using FinApp.EnumValue;
+﻿using FinApp.Core.Enums;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FinApp.SearchContext
+namespace FinApp.Core.SearchContext
 {
     public class UserFlowSearchContext
     {

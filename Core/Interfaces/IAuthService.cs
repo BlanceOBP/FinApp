@@ -1,8 +1,8 @@
-﻿using FinApp.Entity;
+﻿using FinApp.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
 
-namespace FinApp.Interface
+namespace FinApp.Core.Interfaces
 {
     /// <summary>
     /// Defines methods related to authorization.

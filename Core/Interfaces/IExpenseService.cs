@@ -1,8 +1,8 @@
-﻿using FinApp.Entity;
-using FinApp.MiddleEntity;
-using FinApp.SearchContext;
+﻿using FinApp.Core.Models;
+using FinApp.Core.SearchContext;
+using FinApp.Entities;
 
-namespace FinApp.Interfaces
+namespace FinApp.Core.Interfaces
 {
     /// <summary>
     /// Defines methods related to expenses.
